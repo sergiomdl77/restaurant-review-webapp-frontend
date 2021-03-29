@@ -9,7 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit 
+{
   public restaurants: Restaurant[] = [];
 
   constructor(private restaurantService: RestaurantService){}

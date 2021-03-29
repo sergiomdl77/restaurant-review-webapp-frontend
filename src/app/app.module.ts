@@ -4,10 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RestaurantMainComponent } from './restaurant-main.component';
+import { RestaurantListComponent } from './restaurant-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RestaurantMainComponent,
+    RestaurantListComponent
   ],
   imports: [
     BrowserModule,

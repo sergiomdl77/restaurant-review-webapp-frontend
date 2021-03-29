@@ -7,6 +7,7 @@ export interface Member
     firstName: string;
     lastName: string;
     birthDate: Date;
+    locCity: string;
     locState: string;
     locZipCode: string;
     gender: string;

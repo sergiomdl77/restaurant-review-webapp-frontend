@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+/* CDNs */
+
+/* Bootstrap styling */
+@import 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css';   
+
+/* Font-awesome */
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
+/* Bootstrap icons */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css");
+
+/* Font-awesome cdn 
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'; */
+
+
+
+/* GLOBAL STYLING  */
+
+.main-background {
+    background-color: rgb(212, 199, 247);
+}

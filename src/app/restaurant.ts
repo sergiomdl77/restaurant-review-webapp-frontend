@@ -4,10 +4,12 @@ export interface Restaurant
 {
     id: number;
     name: string;
+    locCity: string;
     locState: string;
     locZipCode: string;
     avgScore: number;
+    reviewCount: number;
     foodType: string;
     ambiance: string;
-    priceLevel: string;
+    priceLevel: number;
 }

@@ -1,0 +1,161 @@
+<div class="container" id="main-container">
+    <div class="row bootstrap snippets bootdeys"> 
+        <div class="col-md-9 col-sm-7"> 
+            <h2>Reviewed Restaurants</h2> 
+        </div> 
+        <!--
+        <div class="col-md-3 col-sm-5"> 
+            <form method="get" role="form" class="search-form-full"> 
+                <div class="form-group"> 
+                    <input type="text" class="form-control" name="s" id="search-input" placeholder="Search..."> 
+                    <i class="entypo-search"></i> 
+                </div> 
+            </form> 
+        </div> 
+    -->
+    </div>
+
+    <!-- member entry -->
+    <div class="member-entry" *ngFor="let restaurant of restaurants" > 
+        <a href="#" class="member-img"> 
+            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+            <i class="fa fa-forward"></i> 
+        </a> 
+
+        <div class="search-result-item-body">
+            <div class="row">
+                <div class="col-sm-9">
+                    <h4 class="search-result-item-heading"><a href="#"> {{restaurant.name}} </a></h4>
+                    <p class="info"> {{restaurant.locCity}}, {{restaurant.locState}} {{restaurant.locZipCode}} </p>
+                    <p class="info"> {{restaurant.foodType}} </p>
+                    <p class="info"> {{restaurant.ambiance}} </p>
+                </div>
+                <div class="col-sm-3 text-align-center">
+                    <p>
+                        <span style="margin:2px" *ngFor="let star of countArray(restaurant.priceLevel)">
+                           <img src="/assets/img/currency_dollar_green.png" height="22" width="22"> 
+                        </span>
+                    </p>
+                    <p>
+                        <span style="margin:2px" *ngFor="let star of countArray(restaurant.avgScore)">
+                            <img src="/assets/img/star-fill.svg">
+                        </span>
+                    </p>
+                    <p style="margin-top:15px">
+                        <a (click)="onOpenModal(restaurant, 'reviewList')" class="btn btn-primary btn-info btn-sm" href="#">Reviews</a>
+                    </p>
+                    <p style="margin-top:15px">
+                        <a (click)="onOpenModal(restaurant, 'addReview')" class="btn btn-primary btn-info btn-sm" href="#">Add Review</a>
+                    </p>
+
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>
+
+<!-- Modal to List all reviews for one specific restaurant -->
+<div class="modal fade" id="reviewsOnRestaurantModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"> {{restaurantByName}}'s Reviews</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            <span aria-hidden="true">&times;</span>
+        </div>
+        <div class="modal-body">
+          
+            <div class="member-entry" *ngFor="let review of reviewsOnRestaurant" > 
+                <a href="#" class="member-img"> 
+                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                    <i class="fa fa-forward"></i> 
+                </a> 
+        
+                <div class="search-result-item-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h4 class="search-result-item-heading"><a href="#"> {{review.memberId}} </a></h4>
+                            <p class="info"> {{getMemberLocation(review.memberId)}} </p>
+                            <p class="info"> Posted on: {{review.rvDate}} </p>
+                            <p class="info"> "{{review.comment}}" </p>
+                            <p>
+                                <span style="margin:2px" *ngFor="let star of countArray(review.score)">
+                                    <img src="/assets/img/star-fill.svg">
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<!-- Modal to Add a review for a specific restaurant  -->
+
+<!-- <div class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewList" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            <span aria-hidden="true">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div> -->
+  
+<div class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addEmployeeModalLabel">Add Review</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+
+          <!-- <form #addForm="ngForm" (ngSubmit)="onAddEmloyee(addForm)">
+          <div class="form-group">
+             <label for="name">Name</label>
+             <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+             <label for="email">Email Address</label>
+             <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+             <label for="phone">Job title</label>
+             <input type="text" ngModel name="jobTitle" class="form-control" id="jobTile" placeholder="Job title" required>
+          </div>
+          <div class="form-group">
+             <label for="phone">Phone</label>
+             <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="Phone" required>
+          </div>
+          <div class="form-group">
+             <label for="phone">Image URL</label>
+             <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+          </div>
+          <div class="modal-footer">
+             <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+          </div>
+          </form> -->
+
+       </div>
+    </div>
+  </div>
+  </div>
