@@ -1,6 +1,9 @@
-<div class="main-background">
+<!-- Navigation Bar for the Whole Webapp -->
+<div class="main-background" >
+
+
   <nav class="navbar navbar-expand-lg navbar sticky-top navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Restaurant Review App</a>
+    <a class="navbar-brand" href="#"> <span style="font-weight:bold">Restaurant Review App</span> </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -8,22 +11,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Restaurants<span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLink="restaurants">Restaurants<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Members<span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLink="members">Members<span class="sr-only">(current)</span></a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Dropdown
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Action1</a>
+            <a class="dropdown-item" href="#">Action2</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
@@ -32,8 +32,72 @@
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
       </ul>
+
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <div class="d-flex" id="userDropdownDiv" style="color:white; align-items: center; font-weight:bold;"> 
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <span style="margin-right: 5px">  {{signedInMember.id}} </span> 
+            </a>
+  
+            <span> <h3> <i class="bi bi-person-circle"></i> </h3> </span>
+            <div class="dropdown-menu" aria-labelledby="userDropdown">
+              <a class="dropdown-item">View Profile</a>
+              <a class="dropdown-item">Sign Out</a>
+            </div>
+
+          </div>
+        </li>
+      </ul>
+
     </div>
   </nav>
+  
+  <router-outlet></router-outlet>
 
-  <restaurant-main></restaurant-main>
 </div>
+
+
+<div class="modal fade" id="viewProfileModal" tabindex="-1" aria-labelledby="viewProfileLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewProfileLabel"> {{ signedInMember.id }}'s Profile' </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          <span aria-hidden="true">&times;</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="card m-b-30" style="width: 25rem; margin:2rem;">
+          <div class="card-body row">
+              <div class="col-6" >
+                  <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="img-fluid rounded-circle w-60"></a>
+              </div>
+              <div class="col-6 card-title align-self-center mb-0">
+                  <h5> {{ signedInMember.id }}</h5>
+                  <p class="m-0"> {{ signedInMember.locCity }}, {{ signedInMember.locState }} {{ signedInMember.locZipCode }}</p>
+              </div>
+          </div>
+          <ul class="list-group list-group-flush">
+              <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#"> {{ signedInMember.email }}</a></li>
+              <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ signedInMember.birthDate | date:'medium' | slice:0:12 }}</li>
+              <li class="list-group-item">Gender : {{ signedInMember.gender }}</li>
+              <li class="list-group-item">{{ getReviewsFromMemberCount(signedInMember) }} Reviews posted.</li>
+          </ul>
+          <div class="card-body">
+              <div class="float-right btn-group btn-group-sm">
+                    <a  class="btn btn-primary btn-info btn-sm" style="color:white;">Watch Reviews</a>
+
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+          <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

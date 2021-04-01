@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RestaurantMainComponent } from './restaurant-main/restaurant-main.component';
+import { MemberMainComponent } from './member-main/member-main.component';
 
-const routes: Routes = [];
+
+const routes: Routes = [
+  { path: '', redirectTo: '/restaurants', pathMatch: 'full' },
+  { path: 'restaurants', component: RestaurantMainComponent },
+  { path: 'members', component: MemberMainComponent }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

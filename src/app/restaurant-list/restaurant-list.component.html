@@ -1,6 +1,6 @@
-<div class="container" id="main-container">
+<div class="container" id="restaurantListContainer">
     <div class="row bootstrap snippets bootdeys"> 
-        <div class="col-md-9 col-sm-7"> 
+        <div class="col-md-9 col-sm-7" style="margin: 2rem"> 
             <h2>Reviewed Restaurants</h2> 
         </div> 
         <!--
@@ -15,7 +15,7 @@
     -->
     </div>
 
-    <!-- member entry -->
+    <!-- Restaurant Entry -->
     <div class="member-entry" *ngFor="let restaurant of restaurants" > 
         <a href="#" class="member-img"> 
             <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
@@ -42,10 +42,10 @@
                         </span>
                     </p>
                     <p style="margin-top:15px">
-                        <a (click)="onOpenModal(restaurant, 'reviewList')" class="btn btn-primary btn-info btn-sm" href="#">Reviews</a>
+                        <a (click)="onOpenModal(restaurant, 'reviewList')" class="btn btn-primary btn-info btn-sm" style="color:white;" >Reviews</a>
                     </p>
                     <p style="margin-top:15px">
-                        <a (click)="onOpenModal(restaurant, 'addReview')" class="btn btn-primary btn-info btn-sm" href="#">Add Review</a>
+                        <a (click)="onOpenModal(restaurant, 'addReview')" class="btn btn-primary btn-info btn-sm" style="color:white;">Add Review</a>
                     </p>
 
                 </div>
@@ -59,7 +59,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"> {{restaurantByName}}'s Reviews</h5>
+          <h5 class="modal-title" id="exampleModalLabel"> {{ restaurantOfInterest.name }}'s Reviews</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             <span aria-hidden="true">&times;</span>
         </div>
@@ -75,9 +75,9 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <h4 class="search-result-item-heading"><a href="#"> {{review.memberId}} </a></h4>
-                            <p class="info"> {{getMemberLocation(review.memberId)}} </p>
-                            <p class="info"> Posted on: {{review.rvDate}} </p>
-                            <p class="info"> "{{review.comment}}" </p>
+                            <p class="info"> {{ getMemberLocation(review.memberId) }} </p>
+                            <p class="info"> Posted on: {{review.rvDate | date:'medium' | slice:0:12 }} </p>
+                            <p class="info"> "{{ review.comment }}" </p>
                             <p>
                                 <span style="margin:2px" *ngFor="let star of countArray(review.score)">
                                     <img src="/assets/img/star-fill.svg">

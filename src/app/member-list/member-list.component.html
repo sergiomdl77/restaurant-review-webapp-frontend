@@ -1,0 +1,76 @@
+<div class="container" id="memberListContainer" style="margin:1px">
+    <div class="row">
+
+        <!-- Member Entry -->
+            <div class="card m-b-30" style="width: 25rem; margin:2rem;" *ngFor="let member of members">
+                <div class="card-body row">
+                    <div class="col-6" >
+                        <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <h5> {{ member.id }}</h5>
+                        <p class="m-0"> {{ member.locCity }}, {{ member.locState }} {{ member.locZipCode }}</p>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#"> {{ member.email }}</a></li>
+                    <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ member.birthDate | date:'medium' | slice:0:12 }}</li>
+                    <li class="list-group-item">Gender : {{ member.gender }}</li>
+                    <!-- This next line causes this template to call setReviewsFromMember() many many unnecessary times -->
+                    <!-- <li class="list-group-item">{{ getReviewsFromMemberCount(member) }} Reviews posted.</li>  -->
+                </ul>
+                <div class="card-body">
+                    <div class="float-right btn-group btn-group-sm">
+                          <a (click)="onOpenModal(member, 'reviewList')" class="btn btn-primary btn-info btn-sm" style="color:white;">Watch Reviews</a>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- Modal to List all reviews for one specific restaurant -->
+<div class="modal fade" id="reviewsFromMemberModal" tabindex="-1" aria-labelledby="reviewsFromMemberLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reviewsFromMemberLabel"> {{ memberOfInterest.id }} Reviews</h5>
+          <!-- <p>  ( {{ getReviewsFromMemberCount(memberOfInterest) }} posts )</p> -->
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            <span aria-hidden="true">&times;</span>
+        </div>
+        <div class="modal-body">
+          
+            <div class="member-entry" *ngFor="let review of reviewsFromMember" > 
+                <a href="#" class="member-img"> 
+                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                    <i class="fa fa-forward"></i> 
+                </a> 
+        
+                <div class="search-result-item-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h4 class="search-result-item-heading" > Restaurant: {{ getRestaurantName(review.restaurantId) }} </h4>
+                            <h5 class="search-result-item-heading" > Location: {{ getRestaurantLocation(review.restaurantId) }} </h5>
+                            <h5 class="search-result-item-heading" style="margin-top:5px" > Posted on: {{ review.rvDate | date:'medium' | slice:0:12 }} </h5>
+                            <p class="info" style="margin-top:5px"> "{{review.comment}}" </p>
+                            <p>
+                                <span style="margin:2px" *ngFor="let star of countArray(review.score)">
+                                    <img src="/assets/img/star-fill.svg">
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
