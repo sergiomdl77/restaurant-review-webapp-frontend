@@ -8,8 +8,9 @@
                         <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="img-fluid rounded-circle w-60"></a>
                     </div>
                     <div class="col-6 card-title align-self-center mb-0">
-                        <h5> {{ member.id }}</h5>
-                        <p class="m-0"> {{ member.locCity }}, {{ member.locState }} {{ member.locZipCode }}</p>
+                        <h5 style="font-weight: bold;"> {{ member.id }}</h5>
+                        <!-- <p class="m-0"> {{ member.locCity }}, {{ member.locState }} {{ member.locZipCode }}</p> -->
+                        <p class="m-0" style="color:grey"> {{ getMemberLocation(member.id) }}</p>
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">

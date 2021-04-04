@@ -6,6 +6,7 @@ import { Member } from './member';
 import { Review } from './review';
 import { MemberService } from './member.service';
 import { ReviewService } from './review.service';
+import { NgForm, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -18,9 +19,9 @@ export class AppComponent implements OnInit
   public restaurants: Restaurant[] = [];
   public reviews: Review[] = [];
   public members: Member[] = [];
-  public signedInMember: Member = {} as Member;
+  public loggedInMember: Member = {} as Member;
   public reviewsFromMember: Review[] = [];
-
+  public acceptedPassword = true;
 
   constructor(private restaurantService: RestaurantService, private reviewService: ReviewService, private memberService: MemberService){}
 
@@ -62,21 +63,61 @@ export class AppComponent implements OnInit
     this.memberService.getAllMembers().subscribe(
       (response: Member[]) => {
         this.members = response;
-        this.onLogin("lonelydinner1");        
+          this.addGuestUser();        // Adding mock user to use when nobody has logged in
+          this.onLogout();            // Initializing the loggedInMember to "Guest User"
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
     );
-
   }
 
-  public onLogin(userName: string): void{
-    let targetMember = this.members.find( ({ id }) => id === userName ) as Member;
-    this.signedInMember = targetMember;
+  private addGuestUser(): void {
+    let guest: Member = {
+      id : "Guest",
+      password : "Guest",
+      firstName : "Guest",
+      lastName : "Guest",
+      birthDate : new Date(0),
+      locCity : "Guest",
+      locState : "Guest",
+      locZipCode : "Guest",
+      gender : "Guest",
+      email : "Guest"
+     } 
+
+     this.members.push(guest);
   }
 
 
+  public onLogin(loginForm: NgForm): void{
+    let user = loginForm.value.username as string;
+    let pass = loginForm.value.password as string;
+    const form = document.getElementById('wrongPassword');
+    const closeButton = document.getElementById('closeButton');
+    const formModal = document.getElementById('logInModal');
+    const span = document.createElement('span');
+
+    let targetUser = this.members.find( ({ id}) => (id === user) ) as Member;
+
+    if (targetUser)
+      if (targetUser.password === pass)
+      {
+        this.loggedInMember = targetUser;
+        this.acceptedPassword = true;
+        closeButton?.click();
+      }
+      else
+          this.acceptedPassword = false;
+  }
+
+  public onLogout(): void{
+     this.loggedInMember = this.members.find( ({ id }) => id === "Guest" ) as Member;
+  }
+
+
+  // Method that finds all reviews by a member and inserts them into a list that is reset
+  // every time we query for all of this member's reviews.
   public setReviewsFromMember(member: Member): void {
     this.reviewsFromMember = [];   // First we clear result list of reviews
 
@@ -85,12 +126,14 @@ export class AppComponent implements OnInit
         this.reviewsFromMember.push(review);
   }
 
-
+  // Method that counts and returns number of reviews by one member
   public getReviewsFromMemberCount(member: Member): number {
     this.setReviewsFromMember(member);  
     return this.reviewsFromMember.length;
   }
 
+
+  // Method to assist on displaying the whole member's address in one string
   public getMemberLocation(memberId: string): string{
     let location: string;
     let targetMember = this.members.find( ({ id }) => id === memberId ) as Member;
@@ -106,8 +149,11 @@ export class AppComponent implements OnInit
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
-    if (mode === 'login') {
-      button.setAttribute('data-target', '#loginModal');
+    if (mode === 'viewProfile') {
+      button.setAttribute('data-target', '#viewProfileModal');
+    }
+    if (mode === 'logIn') {
+      button.setAttribute('data-target', '#logInModal');
     }
 
     container?.appendChild(button);    // added "?" because container could be null and this code is on "strict mode"

@@ -1,5 +1,5 @@
 <!-- Navigation Bar for the Whole Webapp -->
-<div class="main-background" >
+<div class="main-background" id="mainContainer" >
 
 
   <nav class="navbar navbar-expand-lg navbar sticky-top navbar navbar-dark bg-dark">
@@ -16,34 +16,32 @@
         <li class="nav-item active">
           <a class="nav-link" routerLink="members">Members<span class="sr-only">(current)</span></a>
         </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action1</a>
-            <a class="dropdown-item" href="#">Action2</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
       </ul>
 
       <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <button class="btn btn-primary btn-info btn-sm" style="margin-top:4px; margin-right:15px; color:white" >Sign Up
+          </button>
+        </li>
+        <li class="nav-item active">
+          <button class="btn btn-outline-info btn-sm" style="margin-top:4px; margin-right:15px; color:teal; font-weight: bold"  
+              [disabled]="loggedInMember.id != 'Guest'" (click)="onOpenModal('logIn')">Log In
+          </button>  
+        </li>
+
         <li class="nav-item dropdown">
           <div class="d-flex" id="userDropdownDiv" style="color:white; align-items: center; font-weight:bold;"> 
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             <span style="margin-right: 5px">  {{signedInMember.id}} </span> 
+              <span *ngIf=" loggedInMember.id != 'Guest'; else guestUser" style="margin-right: 5px">  {{loggedInMember.id}} </span>
+              <ng-template #guestUser>
+                <span style="margin-right: 5px">  Guest User </span> 
+              </ng-template>
             </a>
   
             <span> <h3> <i class="bi bi-person-circle"></i> </h3> </span>
             <div class="dropdown-menu" aria-labelledby="userDropdown">
-              <a class="dropdown-item">View Profile</a>
-              <a class="dropdown-item">Sign Out</a>
+              <button [disabled]="loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('viewProfile')">View Profile</button>
+              <button [disabled]="loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onLogout()">Sign Out</button>
             </div>
 
           </div>
@@ -57,12 +55,12 @@
 
 </div>
 
-
+<!-- Modal to display current user's profile -->
 <div class="modal fade" id="viewProfileModal" tabindex="-1" aria-labelledby="viewProfileLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="viewProfileLabel"> {{ signedInMember.id }}'s Profile' </h5>
+        <h5 class="modal-title" id="viewProfileLabel"> {{ loggedInMember.id }}'s Profile </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
           <span aria-hidden="true">&times;</span>
       </div>
@@ -74,30 +72,65 @@
                   <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="img-fluid rounded-circle w-60"></a>
               </div>
               <div class="col-6 card-title align-self-center mb-0">
-                  <h5> {{ signedInMember.id }}</h5>
-                  <p class="m-0"> {{ signedInMember.locCity }}, {{ signedInMember.locState }} {{ signedInMember.locZipCode }}</p>
+                  <h5 style="font-weight: bold;"> {{ loggedInMember.id }}</h5>
+                  <p class="m-0" style="color:grey"> {{ getMemberLocation(loggedInMember.id) }}</p>
               </div>
           </div>
           <ul class="list-group list-group-flush">
-              <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#"> {{ signedInMember.email }}</a></li>
-              <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ signedInMember.birthDate | date:'medium' | slice:0:12 }}</li>
-              <li class="list-group-item">Gender : {{ signedInMember.gender }}</li>
-              <li class="list-group-item">{{ getReviewsFromMemberCount(signedInMember) }} Reviews posted.</li>
+              <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#"> {{ loggedInMember.email }}</a></li>
+              <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ loggedInMember.birthDate | date:'medium' | slice:0:12 }}</li>
+              <li class="list-group-item">Gender : {{ loggedInMember.gender }}</li>
+              <li class="list-group-item">{{ getReviewsFromMemberCount(loggedInMember) }} Reviews posted.</li>
           </ul>
-          <div class="card-body">
-              <div class="float-right btn-group btn-group-sm">
-                    <a  class="btn btn-primary btn-info btn-sm" style="color:white;">Watch Reviews</a>
-
-              </div>
-          </div>
         </div>
       </div>
 
       <div class="modal-footer">
+          <div class="card-body">
+              <div class="float-right btn-group btn-group-md">
+                  <a  class="btn btn-primary btn-info btn-md" style="color:white;">Edit</a>
+              </div>
+          </div>
+
           <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
+<!--login modal-->
+<div id="logInModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h1 class="text-center">Login</h1>
+          <button id="closeButton" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 
+      </div>
+      <div class="modal-body">
+          <form class="form col-md-12 center-block" #loginForm="ngForm" id="loginForm"  >
+            <div class="form-group">
+              <input type="text" class="form-control input-lg" ngModel name="username" id="username"
+                  placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control input-lg" ngModel name="password" id="password"
+                  placeholder="Password" required>
+            </div>
+            <div class="form-group">
+              <button (click)="onLogin(loginForm)"  class="btn btn-info btn-lg btn-block" type="submit" >Sign In</button>
+              <!-- <button (click)="onLogin(loginForm)" data-dismiss="modal" class="btn btn-info btn-lg btn-block" type="submit" >Sign In</button> -->
+            </div>
+            <div id="wrongPassword" *ngIf="acceptedPassword==false">
+              <span style="color:red">Wrong Username and Password combination.</span>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-1accordion2">
+          <button  class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    	  </div>	
+      </div>
+  </div>
+  </div>
+</div>
