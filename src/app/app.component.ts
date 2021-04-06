@@ -19,11 +19,10 @@ export class AppComponent implements OnInit
   public restaurants: Restaurant[] = [];
   public reviews: Review[] = [];
   public members: Member[] = [];
-  public loggedInMember: Member = {} as Member;
   public reviewsFromMember: Review[] = [];
   public acceptedPassword = true;
 
-  constructor(private restaurantService: RestaurantService, private reviewService: ReviewService, private memberService: MemberService){}
+  constructor(private restaurantService: RestaurantService, private reviewService: ReviewService, public memberService: MemberService){}
 
   ngOnInit() {
     this.getRestaurants();
@@ -100,7 +99,7 @@ export class AppComponent implements OnInit
     if (targetUser)
       if (targetUser.password === pass)
       {
-        this.loggedInMember = targetUser;
+        this.memberService.loggedInMember = targetUser;
         this.acceptedPassword = true;
         closeButton?.click();       // clicing close button to close form after 
       }                             // successful submission of data
@@ -109,7 +108,7 @@ export class AppComponent implements OnInit
   }
 
   public onLogout(): void{
-     this.loggedInMember = this.members.find( ({ id }) => id === "Guest" ) as Member;
+     this.memberService.loggedInMember = this.members.find( ({ id }) => id === "Guest" ) as Member;
   }
 
 
