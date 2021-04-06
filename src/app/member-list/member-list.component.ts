@@ -91,6 +91,17 @@ export class MemberListComponent implements OnInit {
     return location;
   }
   
+  public getShortBirthdate(memberId: string): string{
+    let shortDate: string = "";
+
+    let targetMember: Member = this.members.find( ({ id }) => id === memberId ) as Member;
+  
+    shortDate = targetMember.birthDate.slice(0,15);
+    if (shortDate[14] == ',')
+      shortDate = shortDate.slice(0,14);
+
+    return shortDate;
+  }
 
   public getRestaurantLocation(restaurantId: number): string{
     let location: string;

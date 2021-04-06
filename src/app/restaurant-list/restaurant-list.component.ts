@@ -6,6 +6,7 @@ import { Review } from '../review';
 import { MemberService } from '../member.service';
 import { Member } from '../member';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'restaurant-list',
@@ -79,7 +80,6 @@ export class RestaurantListComponent implements OnInit
         alert(error.message);
       }
     );
-
   }
 
 
@@ -95,16 +95,42 @@ public getMemberLocation(memberId: string): string{
 
   // Method that sets property "reviewsByRestaurantId" with the list of restaurants that 
   // are currently persisted on the database and match the restaurantId provided.  This
-  // method should be called every time 
+  // method should be called every time we need to display a list of reviews for a specific
+  // restaurant
   public setReviewsOnRestaurant(restaurant: Restaurant): void {
     this.reviewsOnRestaurant = [];   // First we clear result list of reviews
     this.restaurantOfInterest = restaurant;
-//
-//    alert("restaurant of interest: " + this.restaurantOfInterest.name);
 
     for (let review of this.reviews)   // And now we form the list of reviews with restaurantId provided
       if (review.restaurantId === restaurant.id)
         this.reviewsOnRestaurant.push(review);
+  }
+
+
+  public onAddReview(addReviewForm: NgForm): void{
+    let theComment = addReviewForm.value.comment as string;
+    let grade = addReviewForm.value.grade as number;
+    const closeButton = document.getElementById('closeButton2');
+    
+    alert(new Date().toString());
+
+    let newReview = {
+      rvId: 10000,
+      restaurantId: this.restaurantOfInterest.id,
+      memberId: "picky_eater3",
+      rvDate: new Date().toString(),
+      comment: theComment,
+      score: grade    
+    }
+
+    this.reviewService.addReview(newReview).subscribe( 
+      (response: Review) => { 
+        console.log(response);
+        this.getReviews();      // to reload all reviews (containing this addition)
+      }
+    )
+    
+    closeButton?.click();       // clicing close button to close form after 
   }
 
 
@@ -122,9 +148,12 @@ public getMemberLocation(memberId: string): string{
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'reviewList') {
       this.setReviewsOnRestaurant(restaurant); // re-sets the reviewsByRestaurant
+                                               // and sets restaurantOfInterest to a value
+                                               // that refers to the restaurant that has the reviews
       button.setAttribute('data-target', '#reviewsOnRestaurantModal');
     }
     if (mode === 'addReview') {
+      this.restaurantOfInterest = restaurant;
       button.setAttribute('data-target', '#addReviewModal');
     }
     container?.appendChild(button);    // added "?" because container could be null and this code is on "strict mode"

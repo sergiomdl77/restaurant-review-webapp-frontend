@@ -78,7 +78,7 @@ export class AppComponent implements OnInit
       password : "Guest",
       firstName : "Guest",
       lastName : "Guest",
-      birthDate : new Date(0),
+      birthDate : "Guest",
       locCity : "Guest",
       locState : "Guest",
       locZipCode : "Guest",
@@ -93,10 +93,7 @@ export class AppComponent implements OnInit
   public onLogin(loginForm: NgForm): void{
     let user = loginForm.value.username as string;
     let pass = loginForm.value.password as string;
-    const form = document.getElementById('wrongPassword');
     const closeButton = document.getElementById('closeButton');
-    const formModal = document.getElementById('logInModal');
-    const span = document.createElement('span');
 
     let targetUser = this.members.find( ({ id}) => (id === user) ) as Member;
 
@@ -105,8 +102,8 @@ export class AppComponent implements OnInit
       {
         this.loggedInMember = targetUser;
         this.acceptedPassword = true;
-        closeButton?.click();
-      }
+        closeButton?.click();       // clicing close button to close form after 
+      }                             // successful submission of data
       else
           this.acceptedPassword = false;
   }
@@ -136,12 +133,14 @@ export class AppComponent implements OnInit
   // Method to assist on displaying the whole member's address in one string
   public getMemberLocation(memberId: string): string{
     let location: string;
-    let targetMember = this.members.find( ({ id }) => id === memberId ) as Member;
+    let targetMember: Member = this.members.find( ({ id }) => id === memberId ) as Member;
   
     location = `${targetMember.locCity}, ${targetMember.locState} ${targetMember.locZipCode}`;
   
     return location;
   }
+
+
 
   public onOpenModal(mode: string): void {
     const container = document.getElementById('mainContainer');

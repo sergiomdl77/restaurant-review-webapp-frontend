@@ -6,7 +6,7 @@ export interface Member
     password: string;
     firstName: string;
     lastName: string;
-    birthDate: Date;
+    birthDate: string;
     locCity: string;
     locState: string;
     locZipCode: string;

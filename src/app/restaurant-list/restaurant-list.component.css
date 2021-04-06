@@ -1,5 +1,8 @@
 /* CUSTOM STYLES FOR RESTAURANT LIST */
 
+.modal-footer {   border-top: 0px; }
+
+
 /* from snippet:   https://www.bootdey.com/snippets/view/Members */
 body{margin-top:20px;
     background:#eee;

@@ -15,7 +15,8 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#"> {{ member.email }}</a></li>
-                    <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ member.birthDate | date:'medium' | slice:0:12 }}</li>
+                    <!-- <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ member.birthDate | date:'medium' | slice:0:12 }}</li> -->
+                    <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ getShortBirthdate( member.id )  }}</li>
                     <li class="list-group-item">Gender : {{ member.gender }}</li>
                     <!-- This next line causes this template to call setReviewsFromMember() many many unnecessary times -->
                     <!-- <li class="list-group-item">{{ getReviewsFromMemberCount(member) }} Reviews posted.</li>  -->
