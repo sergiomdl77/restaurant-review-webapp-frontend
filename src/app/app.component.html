@@ -20,19 +20,20 @@
 
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <button class="btn btn-primary btn-info btn-sm" style="margin-top:4px; margin-right:15px; color:white" >Sign Up
+          <button class="btn btn-primary btn-info btn-sm" style="margin-top:4px; margin-right:15px; color:white" 
+              [disabled]="memberService.loggedInMember.id != 'Guest'" (click)="onOpenModal('addMember')">Sign Up
           </button>
         </li>
         <li class="nav-item active">
           <button class="btn btn-outline-info btn-sm" style="margin-top:4px; margin-right:15px; color:teal; font-weight: bold"  
-              [disabled]="loggedInMember.id != 'Guest'" (click)="onOpenModal('logIn')">Log In
+              [disabled]="memberService.loggedInMember.id != 'Guest'" (click)="onOpenModal('logIn')">Log In
           </button>  
         </li>
 
         <li class="nav-item dropdown">
           <div class="d-flex" id="userDropdownDiv" style="color:white; align-items: center; font-weight:bold;"> 
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span *ngIf=" loggedInMember.id != 'Guest'; else guestUser" style="margin-right: 5px">  {{loggedInMember.id}} </span>
+              <span *ngIf=" memberService.loggedInMember.id != 'Guest'; else guestUser" style="margin-right: 5px">  {{memberService.loggedInMember.id}} </span>
               <ng-template #guestUser>
                 <span style="margin-right: 5px">  Guest User </span> 
               </ng-template>
@@ -40,8 +41,9 @@
   
             <span> <h3> <i class="bi bi-person-circle"></i> </h3> </span>
             <div class="dropdown-menu" aria-labelledby="userDropdown">
-              <button [disabled]="loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('viewProfile')">View Profile</button>
-              <button [disabled]="loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onLogout()">Sign Out</button>
+              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myProfile')">My Profile</button>
+              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myReviews')">My Reviews</button>
+              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onLogout()">Sign Out</button>
             </div>
 
           </div>
@@ -55,12 +57,127 @@
 
 </div>
 
-<!-- Modal to display current user's profile -->
-<div class="modal fade" id="viewProfileModal" tabindex="-1" aria-labelledby="viewProfileLabel" aria-hidden="true">
+
+<!--Add Member (MODAL)-->
+<div id="addMemberModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="text-center">Sign Up</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+            <form #addMemberForm="ngForm" class="form col-md-12 center-block"  id="addMemberForm"  >
+              <div class="form-group">
+                <input ngModel type="text" class="form-control input-lg"  name="username" id="username"
+                    placeholder="Username" required>
+              </div>
+              <div class="form-group">
+                <input ngModel type="password" class="form-control input-lg"  name="password" id="password"
+                    placeholder="Password" required>
+              </div>
+              <div class="form-group">
+                <input ngModel type="text" class="form-control input-lg"  name="firstName" id="firstName"
+                    placeholder="First Name" required>
+              </div>
+              <div class="form-group">
+                <input ngModel type="text" class="form-control input-lg"  name="lastName" id="lastName"
+                    placeholder="Last Name" required>
+              </div>
+              <div class="form-group">
+                <input ngModel type="date" class="form-control input-lg"  name="birthDate" id="birthDate"
+                    placeholder="Birthdate" required>
+              </div>
+              <div class="form-group">
+                <input ngModel type="text" class="form-control input-lg"  name="locCity" id="locCity"
+                    placeholder="Your City" required>
+              </div>
+              <div class="form-group">
+                <input ngModel type="text" class="form-control input-lg"  name="locState" id="locState"
+                    placeholder="Your State" required>
+              </div>
+              <div class="form-group">
+                <input ngModel type="text" class="form-control input-lg"  name="locZipCode" id="locZipCode"
+                    placeholder="Your Zip Code" required>
+              </div>
+              <div class="form-group">
+                  <input style="margin:5px" ngModel type="radio" id="maleOption" name="gender" value="Male" required>
+                  <label style="margin-right:10px" for="maleOption">  Male </label>
+                  <input style="margin:5px" ngModel type="radio" id="femaleOption" name="gender" value="Female" required>
+                  <label style="margin-right:10px" for="femaleOption">  Female </label>
+                  <input style="margin:5px" ngModel type="radio" id="otherOption" name="gender" value="Other" required>
+                  <label style="margin-right:10px" for="otherOption">  Other </label>
+              </div>
+              <div class="form-group">
+                <input ngModel type="text" class="form-control input-lg"  name="email" id="email"
+                    placeholder="Email Adress" required>
+              </div>
+
+              <div class="form-group">
+                <button (click)="onAddMember(addMemberForm)" class="btn btn-info btn-lg btn-block" type="submit" 
+                  [disabled]="addMemberForm.invalid" >Submit Information
+                </button>
+              </div>
+
+              <div id="wrongPassword" *ngIf="acceptedPassword==false">
+                <span style="color:red">The entered username already exists. Please choose a different one.</span>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="col-md-1accordion2">
+            <button id="addMemberCloseButton" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          </div>	
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Login (MODAL)-->
+<div id="logInModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="text-center">Login</h1>
+            <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+        </div>
+        <div class="modal-body">
+            <form class="form col-md-12 center-block" #loginForm="ngForm" id="loginForm"  >
+              <div class="form-group">
+                <input type="text" class="form-control input-lg" ngModel name="username" id="username"
+                    placeholder="Username" required>
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control input-lg" ngModel name="password" id="password"
+                    placeholder="Password" required>
+              </div>
+              <div class="form-group">
+                <button (click)="onLogin(loginForm)"  class="btn btn-info btn-lg btn-block" type="submit" >Sign In</button>
+              </div>
+              <div id="wrongPassword" *ngIf="acceptedPassword==false">
+                <span style="color:red">Invalid username & password combination. Please try again.</span>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="col-md-1accordion2">
+            <button id="loginCloseButton" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          </div>	
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- My Profile (MODAL)-->
+<div class="modal fade" id="myProfileModal" tabindex="-1" aria-labelledby="myProfileLabel" aria-hidden="true">
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="viewProfileLabel"> {{ loggedInMember.id }}'s Profile </h5>
+        <h5 class="modal-title" id="myProfileLabel"> My Profile </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
           <span aria-hidden="true">&times;</span>
       </div>
@@ -72,15 +189,18 @@
                   <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="img-fluid rounded-circle w-60"></a>
               </div>
               <div class="col-6 card-title align-self-center mb-0">
-                  <h5 style="font-weight: bold;"> {{ loggedInMember.id }}</h5>
-                  <p class="m-0" style="color:grey"> {{ getMemberLocation(loggedInMember.id) }}</p>
+                  <h5 style="font-weight: bold;"> {{ memberService.loggedInMember.id }}</h5>
+                  <p class="m-0" style="color:grey"> {{ getMemberLocation(memberService.loggedInMember.id) }}</p>
               </div>
           </div>
           <ul class="list-group list-group-flush">
-              <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#"> {{ loggedInMember.email }}</a></li>
-              <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ loggedInMember.birthDate | date:'medium' | slice:0:12 }}</li>
-              <li class="list-group-item">Gender : {{ loggedInMember.gender }}</li>
-              <li class="list-group-item">{{ getReviewsFromMemberCount(loggedInMember) }} Reviews posted.</li>
+              <li class="list-group-item">First Name : {{ memberService.loggedInMember.firstName }}</li>
+              <li class="list-group-item">Last Name : {{ memberService.loggedInMember.lastName }}</li>
+              <li class="list-group-item">Gender : {{ memberService.loggedInMember.gender }}</li>
+              <li class="list-group-item">Birthdate : {{ getShortBirthdate( memberService.loggedInMember.id )}} <i class="bi bi-calendar-check float-right"></i></li>
+              <li class="list-group-item">Password : {{ memberService.loggedInMember.password }}<i class="bi bi-lock-fill float-right"></i></li>
+              <li class="list-group-item">Email : <a href="#"> {{ memberService.loggedInMember.email }} </a> <i class="fa fa-envelope float-right"></i></li>
+              <li class="list-group-item">Posted Reviews: {{ getReviewsFromMemberCount() }} <i class="bi bi-hand-thumbs-up float-right"></i></li>
           </ul>
         </div>
       </div>
@@ -92,45 +212,48 @@
               </div>
           </div>
 
-          <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-<!--login modal-->
-<div id="logInModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-  <div class="modal-content">
+<!-- My Reviews (MODAL) -->
+<div class="modal fade" id="myReviewsModal" tabindex="-1" aria-labelledby="myReviewsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" >
+    <div class="modal-content" >
       <div class="modal-header">
-          <h1 class="text-center">Login</h1>
-          <button id="closeButton" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myReviewsLabel" style="font-weight:bold; color:teal"> {{ this.memberService.loggedInMember.id }} Reviews</h4>
+        <!-- <p>  ( {{ getReviewsFromMemberCount(memberOfInterest) }} posts )</p> -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          <span aria-hidden="true">&times;</span>
+      </div>
+      <div class="modal-body" style=" background-color: darkgray;">
+
+          <div class="member-entry" *ngFor="let review of reviewsFromMember" > 
+              <div class="search-result-item-body">
+                  <div class="row">
+                      <div class="col-sm-9">
+                          <h4 class="search-result-item-heading" > Restaurant: {{ getRestaurantName(review.restaurantId) }} </h4>
+                          <h5 class="search-result-item-heading" > Location: {{ getRestaurantLocation(review.restaurantId) }} </h5>
+                          <h5 class="search-result-item-heading" style="margin-top:5px" > Posted on: {{ review.rvDate | slice:0:24 }} </h5>
+                          <p class="info" style="margin-top:5px"> "{{review.comment}}" </p>
+                          <p>
+                              <span style="margin:2px" *ngFor="let star of countArray(review.score)">
+                                  <img src="/assets/img/star-fill.svg">
+                              </span>
+                          </p>
+                      </div>
+                  </div>
+              </div>    
+          </div>
 
       </div>
-      <div class="modal-body">
-          <form class="form col-md-12 center-block" #loginForm="ngForm" id="loginForm"  >
-            <div class="form-group">
-              <input type="text" class="form-control input-lg" ngModel name="username" id="username"
-                  placeholder="Username" required>
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control input-lg" ngModel name="password" id="password"
-                  placeholder="Password" required>
-            </div>
-            <div class="form-group">
-              <button (click)="onLogin(loginForm)"  class="btn btn-info btn-lg btn-block" type="submit" >Sign In</button>
-              <!-- <button (click)="onLogin(loginForm)" data-dismiss="modal" class="btn btn-info btn-lg btn-block" type="submit" >Sign In</button> -->
-            </div>
-            <div id="wrongPassword" *ngIf="acceptedPassword==false">
-              <span style="color:red">Wrong Username and Password combination.</span>
-            </div>
-          </form>
-      </div>
       <div class="modal-footer">
-          <div class="col-md-1accordion2">
-          <button  class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-    	  </div>	
+          <button type="button" class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
       </div>
-  </div>
+    </div>
   </div>
 </div>
+
+
