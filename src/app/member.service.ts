@@ -14,6 +14,8 @@ import { environment } from 'src/environments/environment'
 export class MemberService
 {
     private apiServerUrl = environment.apiBaseUrl;
+    public loggedInMember: Member = {} as Member;
+    public members: Member[] = [];
 
     // Injecting the built in HttpClient to make http requests to backend
     constructor(private http: HttpClient) {}

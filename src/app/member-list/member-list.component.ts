@@ -12,21 +12,22 @@ import { ReviewService } from '../review.service';
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.css']
 })
-export class MemberListComponent implements OnInit {
-
-  public restaurants: Restaurant[] = [];
-  public reviews: Review[] = [];
-  public members: Member[] = [];
+//export class MemberListComponent implements OnInit {
+export class MemberListComponent 
+{
+  // public restaurants: Restaurant[] = [];
+  // public reviews: Review[] = [];
+  // public members: Member[] = [];
   public reviewsFromMember: Review[] = [];
   public memberOfInterest: Member = {} as Member;
 
-  constructor(private restaurantService: RestaurantService, private reviewService: ReviewService, private memberService: MemberService){}
+  constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
 
-  ngOnInit() {
-    this.getRestaurants();
-    this.getReviews();
-    this.getMembers();
-  }
+  // ngOnInit() {
+  //   this.getRestaurants();
+  //   this.getReviews();
+  //   this.getMembers();
+  // }
 
 
   // Method used to create an array that will simple assist *ngFor as a counter to display an icon 
@@ -41,7 +42,7 @@ export class MemberListComponent implements OnInit {
   public getRestaurants(): void {
     this.restaurantService.getAllRestaurants().subscribe(
       (response: Restaurant[]) => {
-        this.restaurants = response;
+        this.restaurantService.restaurants = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -55,7 +56,7 @@ export class MemberListComponent implements OnInit {
   public getReviews(): void {
     this.reviewService.getAllReviews().subscribe(
       (response: Review[]) => {
-        this.reviews = response;
+        this.reviewService.reviews = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -69,7 +70,7 @@ export class MemberListComponent implements OnInit {
   public getMembers(): void {
     this.memberService.getAllMembers().subscribe(
       (response: Member[]) => {
-        this.members = response;
+        this.memberService.members = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -82,19 +83,20 @@ export class MemberListComponent implements OnInit {
     return this.reviewsFromMember.length;
   }
 
+
   public getMemberLocation(memberId: string): string{
     let location: string;
-    let targetMember = this.members.find( ({ id }) => id === memberId ) as Member;
+    let targetMember = this.memberService.members.find( ({ id }) => id === memberId ) as Member;
   
     location = `${targetMember.locCity}, ${targetMember.locState} ${targetMember.locZipCode}`;
   
     return location;
   }
   
+
   public getShortBirthdate(memberId: string): string{
     let shortDate: string = "";
-
-    let targetMember: Member = this.members.find( ({ id }) => id === memberId ) as Member;
+    let targetMember: Member = this.memberService.members.find( ({ id }) => id === memberId ) as Member;
   
     shortDate = targetMember.birthDate.slice(0,15);
     if (shortDate[14] == ',')
@@ -105,7 +107,7 @@ export class MemberListComponent implements OnInit {
 
   public getRestaurantLocation(restaurantId: number): string{
     let location: string;
-    let targetRestaurant = this.restaurants.find( ({ id }) => id === restaurantId ) as Restaurant;
+    let targetRestaurant = this.restaurantService.restaurants.find( ({ id }) => id === restaurantId ) as Restaurant;
   
     location = `${targetRestaurant.locCity}, ${targetRestaurant.locState} ${targetRestaurant.locZipCode}`;
   
@@ -115,7 +117,7 @@ export class MemberListComponent implements OnInit {
 
   public getRestaurantName(restaurantId: number): string{
     let restaurantName: string;
-    let targetRestaurant = this.restaurants.find( ({ id }) => id === restaurantId ) as Restaurant;
+    let targetRestaurant = this.restaurantService.restaurants.find( ({ id }) => id === restaurantId ) as Restaurant;
   
     restaurantName = targetRestaurant.name;
   
@@ -127,7 +129,7 @@ export class MemberListComponent implements OnInit {
     this.reviewsFromMember = [];   // First we clear result list of reviews
     this.memberOfInterest = member;
 
-    for (let review of this.reviews)   // And now we form the list of reviews with restaurantId provided
+    for (let review of this.reviewService.reviews)   // And now we form the list of reviews with restaurantId provided
     { 
       if (review.memberId === member.id)
         this.reviewsFromMember.push(review);

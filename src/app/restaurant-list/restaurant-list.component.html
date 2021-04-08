@@ -1,13 +1,11 @@
-<div class="container" id="restaurantListContainer">
-    <div class="row bootstrap snippets bootdeys"> 
-        <div class="col-md-9 col-sm-7" style="margin: 2rem"> 
-            <h2>Reviewed Restaurants</h2> 
-        </div> 
-    </div>
+<div class="row bootstrap snippets bootdeys" style="justify-content: center"> 
+    <h2 style="text-align: center; margin: 2rem" >Restaurants to Review</h2> 
+</div>
 
+<div class="container" id="restaurantListContainer" style="width:50%">
     <!-- Restaurant Entry -->
-    <div class="member-entry" *ngFor="let restaurant of restaurants" > 
-        <a href="#" class="member-img"> 
+    <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants" > 
+        <a href="#" class="member-img" style="width:10rem; height:10rem"> 
             <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
             <i class="fa fa-forward"></i> 
         </a> 
@@ -46,18 +44,18 @@
 
 <!-- Modal to List all reviews for one specific restaurant -->
 <div class="modal fade" id="reviewsOnRestaurantModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"> {{ restaurantOfInterest.name }}'s Reviews</h5>
+          <h4 class="modal-title"  style="font-weight:bold; color:teal"> {{ restaurantOfInterest.name }}'s Reviews</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             <span aria-hidden="true">&times;</span>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style=" background-color: darkgray;">
           
             <div class="member-entry" *ngFor="let review of reviewsOnRestaurant" > 
-                <a href="#" class="member-img"> 
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                <a href="#" class="member-img" style="width:10rem; height:10rem"> 
+                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded" > 
                     <i class="fa fa-forward"></i> 
                 </a> 
         
@@ -66,8 +64,7 @@
                         <div class="col-sm-9">
                             <h4 class="search-result-item-heading"><a href="#"> {{review.memberId}} </a></h4>
                             <p class="info"> {{ getMemberLocation(review.memberId) }} </p>
-                            <!-- <p class="info"> Posted on: {{review.rvDate | date:'medium' | slice:0:12 }} </p> -->
-                            <p class="info"> Posted on: {{ review.rvDate  }} </p>
+                            <p class="info"> Posted on: {{ review.rvDate | slice:0:24 }} </p>
                             <p class="info"> "{{ review.comment }}" </p>
                             <p>
                                 <span style="margin:2px" *ngFor="let star of countArray(review.score)">
@@ -81,7 +78,7 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="add-employee-form" class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -99,24 +96,79 @@
         <div class="modal-body">
             <form class="form col-md-12 center-block" #addReviewForm="ngForm" id="addReviewForm"  >
               <div class="form-group">
-                <input type="text" class="form-control input-lg" ngModel name="comment" id="comment"
+                <textarea  rows="4"  class="form-control input-lg" ngModel name="comment" id="comment"
                     placeholder="Your comment" required>
+                </textarea>
               </div>
-              <div class="form-group">
-                <input type="text" class="form-control input-lg" ngModel name="grade" id="grade"
-                    placeholder="Number of stars awarded" required>
+              <div>
+                  <h6> How would you grade your overall experience:</h6>
+              </div>
+              <div class="form-group" style="margin-left: 10rem">
+                <input ngModel type="radio" id="oneStar" name="grade" value="1" required>
+                <label for="oneStar"> <span style="margin:5px"></span>
+                    <span style="margin:2px" *ngFor="let star of countArray(1)">
+                        <img src="/assets/img/star-fill.svg">
+                    </span>
+                </label><br>
+                <input ngModel type="radio" id="twoStar" name="grade" value="2" required>
+                <label for="twoStar"> <span style="margin:5px"></span>
+                    <span style="margin:2px" *ngFor="let star of countArray(2)">
+                        <img src="/assets/img/star-fill.svg">
+                    </span>
+                </label><br>
+                <input ngModel type="radio" id="threeStar" name="grade" value="3" required>
+                <label for="threeStar"> <span style="margin:5px"></span>
+                    <span style="margin:2px" *ngFor="let star of countArray(3)">
+                        <img src="/assets/img/star-fill.svg">
+                    </span>
+                </label><br>
+                <input ngModel type="radio" id="fourStar" name="grade" value="4" required>
+                <label for="fourStar"> <span style="margin:5px"></span>
+                    <span style="margin:2px" *ngFor="let star of countArray(4)">
+                        <img src="/assets/img/star-fill.svg">
+                    </span>
+                </label><br>
+                <input ngModel type="radio" id="fiveStar" name="grade" value="5" required>
+                <label for="fiveStar"> <span style="margin:5px"></span>
+                    <span style="margin:2px" *ngFor="let star of countArray(5)">
+                        <img src="/assets/img/star-fill.svg">
+                    </span>
+                </label><br>
               </div>
               <div class="form-group">
                 <button (click)="onAddReview(addReviewForm)" data-dismiss="modal" class="btn btn-info btn-lg btn-block" 
-                    type="submit" >Submit Review</button>
+                    type="submit" [disabled]="addReviewForm.invalid" >Submit Review</button>
               </div>
             </form>
         </div>
         <div class="modal-footer">
-            <div class="col-md-1accordion2">
-            <button id="closeButton2" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <div class="col-md-1accordion2" style="margin-top: 5px">
+                <button id="addReviewCloseButton" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>
             </div>	
         </div>
     </div>
   </div>
 </div>
+
+<!-- Modal to show message after denying permission to add Review from Guest User  -->
+<div id="addReviewDeniedModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="text-center">Become a Member</h3>
+              <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+              <h6>As a Guest User you are not allowed to add reviews. </h6> 
+              <h6>We would love to know about your opinion on restaurants.</h6> 
+              <h6>SIGN UP to become a member and let's hear about your dining experiences.</h6> 
+          </div>
+          <div class="modal-footer">
+              <div class="col-md-1accordion2">
+              <button class="btn btn-primary btn-info btn-sm" data-dismiss="modal" aria-hidden="true">Close</button>
+              </div>	
+          </div>
+      </div>
+    </div>
+  </div>
+  

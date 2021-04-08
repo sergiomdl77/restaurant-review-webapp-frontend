@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 export class ReviewService
 {
     private apiServerUrl = environment.apiBaseUrl;
+    public reviews: Review[] = []; 
 
     // Injecting the built in HttpClient to make http requests to backend
     constructor(private http: HttpClient) {}

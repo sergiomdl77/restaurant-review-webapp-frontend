@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 export class RestaurantService
 {
     private apiServerUrl = environment.apiBaseUrl;
+    public restaurants: Restaurant[] = [];
 
     // Injecting the built in HttpClient to make http requests to backend
     constructor(private http: HttpClient) {}

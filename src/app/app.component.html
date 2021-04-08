@@ -70,19 +70,19 @@
             <form #addMemberForm="ngForm" class="form col-md-12 center-block"  id="addMemberForm"  >
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="username" id="username"
-                    placeholder="Username" required>
+                    placeholder="Username (8 to 20 alphanumeric characters)" pattern="[A-Za-z0-9-_]{8,20}" required>
               </div>
               <div class="form-group">
                 <input ngModel type="password" class="form-control input-lg"  name="password" id="password"
-                    placeholder="Password" required>
+                    placeholder="Password (8 to 20 characters)" pattern=".{3,20}"required>
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="firstName" id="firstName"
-                    placeholder="First Name" required>
+                    placeholder="First Name" pattern="[A-Za-z]{1,30}" required>
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="lastName" id="lastName"
-                    placeholder="Last Name" required>
+                    placeholder="Last Name" pattern="[A-Za-z]{1,30}" required>
               </div>
               <div class="form-group">
                 <input ngModel type="date" class="form-control input-lg"  name="birthDate" id="birthDate"
@@ -90,15 +90,15 @@
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="locCity" id="locCity"
-                    placeholder="Your City" required>
+                    placeholder="Your City" pattern="[A-Za-z]{1,30}" required>
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="locState" id="locState"
-                    placeholder="Your State" required>
+                    placeholder="Your State (2 letter format)" pattern="[A-Za-z]{2}" required>
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="locZipCode" id="locZipCode"
-                    placeholder="Your Zip Code" required>
+                    placeholder="Your Zip Code (5 digit format)" pattern="[0-9]{5}" required>
               </div>
               <div class="form-group">
                   <input style="margin:5px" ngModel type="radio" id="maleOption" name="gender" value="Male" required>
@@ -109,8 +109,8 @@
                   <label style="margin-right:10px" for="otherOption">  Other </label>
               </div>
               <div class="form-group">
-                <input ngModel type="text" class="form-control input-lg"  name="email" id="email"
-                    placeholder="Email Adress" required>
+                <input ngModel type="text" class="form-control input-lg"  name="email" id="email" 
+                    placeholder="Email Adress" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
               </div>
 
               <div class="form-group">
@@ -118,9 +118,11 @@
                   [disabled]="addMemberForm.invalid" >Submit Information
                 </button>
               </div>
-
+              <div *ngIf="addMemberForm.invalid">
+                <span style="color:teal">Submit button will be enabled when all fields have been properly completed.</span>
+              </div>
               <div id="wrongPassword" *ngIf="acceptedPassword==false">
-                <span style="color:red">The entered username already exists. Please choose a different one.</span>
+                <span style="color:red">The last username you entered already exists. Please enter a different one.</span>
               </div>
             </form>
         </div>
@@ -223,7 +225,7 @@
   <div class="modal-dialog modal-lg" >
     <div class="modal-content" >
       <div class="modal-header">
-        <h4 class="modal-title" id="myReviewsLabel" style="font-weight:bold; color:teal"> {{ this.memberService.loggedInMember.id }} Reviews</h4>
+        <h4 class="modal-title" id="myReviewsLabel" style="font-weight:bold; color:teal"> {{ this.memberService.loggedInMember.id }}'s Reviews</h4>
         <!-- <p>  ( {{ getReviewsFromMemberCount(memberOfInterest) }} posts )</p> -->
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
           <span aria-hidden="true">&times;</span>
@@ -256,4 +258,25 @@
   </div>
 </div>
 
+<!-- Sign Up Acceptance (MODAL) -->
+<div class="modal fade" id="signUpAcceptanceModal" tabindex="-1" aria-labelledby="signUpAcceptanceLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h4 class="modal-title" id="signUpAcceptanceLabel" style="font-weight:bold; color:teal"> Welcome {{ this.memberService.loggedInMember.id }}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          <span aria-hidden="true">&times;</span>
+      </div>
+      <div class="modal-body" >
+        <h6 style="text-align: center;">Thank you for signing up with us. </h6> 
+        <h6 style="text-align: center;">You have been automatically logged in. </h6> 
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-1accordion2">
+          <button class="btn btn-primary btn-info btn-sm" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>	
+      </div>
+    </div>
+  </div>
+</div>
 

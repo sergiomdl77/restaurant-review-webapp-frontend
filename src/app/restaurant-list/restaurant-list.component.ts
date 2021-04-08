@@ -14,23 +14,24 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./restaurant-list.component.css']
 })
 
-export class RestaurantListComponent implements OnInit 
+// export class RestaurantListComponent implements OnInit 
+export class RestaurantListComponent 
 {
-  public restaurants: Restaurant[] = [];
-  public reviews: Review[] = [];
-  public members: Member[] = [];
+  // public restaurants: Restaurant[] = [];
+  // public reviews: Review[] = [];
+  // public members: Member[] = [];
   public reviewsOnRestaurant: Review[] = [];
   public restaurantOfInterest: Restaurant = {} as Restaurant;    
   public memberOnReview = {} as Member;
 
-  constructor(private restaurantService: RestaurantService, private reviewService: ReviewService, private memberService: MemberService){}
+  constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
 
   //Setting up my all the necessary data from the database for its use in the component's template.
-  ngOnInit() {
-    this.getRestaurants();
-    this.getReviews();
-    this.getMembers();
-  }
+  // ngOnInit() {
+  //   this.getRestaurants();
+  //   this.getReviews();
+  //   this.getMembers();
+  // }
 
 
   // Method used to create an array that will simple assist *ngFor as a counter to display an icon 
@@ -45,7 +46,7 @@ export class RestaurantListComponent implements OnInit
   public getRestaurants(): void {
     this.restaurantService.getAllRestaurants().subscribe(
       (response: Restaurant[]) => {
-        this.restaurants = response;
+        this.restaurantService.restaurants = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -59,7 +60,7 @@ export class RestaurantListComponent implements OnInit
   public getReviews(): void {
     this.reviewService.getAllReviews().subscribe(
       (response: Review[]) => {
-        this.reviews = response;
+        this.reviewService.reviews = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -73,7 +74,7 @@ export class RestaurantListComponent implements OnInit
   public getMembers(): void {
     this.memberService.getAllMembers().subscribe(
       (response: Member[]) => {
-        this.members = response;
+        this.memberService.members = response;
 
       },
       (error: HttpErrorResponse) => {
@@ -85,7 +86,7 @@ export class RestaurantListComponent implements OnInit
 
 public getMemberLocation(memberId: string): string{
   let location: string;
-  let targetMember = this.members.find( ({ id }) => id === memberId ) as Member;
+  let targetMember = this.memberService.members.find( ({ id }) => id === memberId ) as Member;
 
   location = `${targetMember.locCity}, ${targetMember.locState} ${targetMember.locZipCode}`;
 
@@ -101,7 +102,7 @@ public getMemberLocation(memberId: string): string{
     this.reviewsOnRestaurant = [];   // First we clear result list of reviews
     this.restaurantOfInterest = restaurant;
 
-    for (let review of this.reviews)   // And now we form the list of reviews with restaurantId provided
+    for (let review of this.reviewService.reviews)   // And now we form the list of reviews with restaurantId provided
       if (review.restaurantId === restaurant.id)
         this.reviewsOnRestaurant.push(review);
   }
@@ -110,14 +111,12 @@ public getMemberLocation(memberId: string): string{
   public onAddReview(addReviewForm: NgForm): void{
     let theComment = addReviewForm.value.comment as string;
     let grade = addReviewForm.value.grade as number;
-    const closeButton = document.getElementById('closeButton2');
+    const closeButton = document.getElementById('addReviewCloseButton');
     
-    alert(new Date().toString());
-
     let newReview = {
-      rvId: 10000,
+      rvId: 10000,          // this value will be ignored by backend since it generates the rvId
       restaurantId: this.restaurantOfInterest.id,
-      memberId: "picky_eater3",
+      memberId: this.memberService.loggedInMember.id,
       rvDate: new Date().toString(),
       comment: theComment,
       score: grade    
@@ -125,11 +124,11 @@ public getMemberLocation(memberId: string): string{
 
     this.reviewService.addReview(newReview).subscribe( 
       (response: Review) => { 
-        console.log(response);
         this.getReviews();      // to reload all reviews (containing this addition)
       }
     )
     
+    addReviewForm.reset();
     closeButton?.click();       // clicing close button to close form after 
   }
 
@@ -153,8 +152,14 @@ public getMemberLocation(memberId: string): string{
       button.setAttribute('data-target', '#reviewsOnRestaurantModal');
     }
     if (mode === 'addReview') {
-      this.restaurantOfInterest = restaurant;
-      button.setAttribute('data-target', '#addReviewModal');
+      if (this.memberService.loggedInMember.id != "Guest")
+      {
+        this.restaurantOfInterest = restaurant;
+        button.setAttribute('data-target', '#addReviewModal');
+      }
+      else
+        button.setAttribute('data-target', '#addReviewDeniedModal');
+
     }
     container?.appendChild(button);    // added "?" because container could be null and this code is on "strict mode"
     button.click();
