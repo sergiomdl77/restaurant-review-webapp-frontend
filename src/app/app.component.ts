@@ -7,6 +7,7 @@ import { Member } from './member';
 import { Review } from './review';
 import { NgForm, NgModel } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-root',
@@ -16,18 +17,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export class AppComponent implements OnInit 
 {
-  // public restaurants: Restaurant[] = [];
-  // public reviews: Review[] = [];
-  // public members: Member[] = [];
   public reviewsFromMember: Review[] = [];
   public acceptedPassword = true;
+  public reviewToDelete = {} as Review;
 
   constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
 
   ngOnInit() {
     this.getRestaurants();
     this.getReviews();
-    this.getMembers();
+    this.getMembersForInit();
   }
 
   public getRestaurants(): void {
@@ -56,9 +55,9 @@ export class AppComponent implements OnInit
   }
 
 
-  // Method that sets property "members" with the complete list of restaurants that are 
-  // currently persisted on the database
-  public getMembers(): void {
+  // Method that sets injected memberService with the complete list of restaurants that are 
+  // currently persisted on the database at the moment of initializing the component
+  public getMembersForInit(): void {
     this.memberService.getAllMembers().subscribe(
       (response: Member[]) => {
         this.memberService.members = response;
@@ -89,12 +88,32 @@ export class AppComponent implements OnInit
   }
 
 
-    // Method used to create an array that will simple assist *ngFor as a counter to display an icon 
+  // Method that sets injected memberService with the complete list of restaurants that are 
+  // currently persisted on the database at the moment of initializing the component
+  public getMembers(): void {
+    this.memberService.getAllMembers().subscribe(
+      (response: Member[]) => {
+        this.memberService.members = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+
+  // Method used to create an array that will simple assist *ngFor as a counter to display an icon 
   // a number of times (reps times)
   public countArray(reps: number){
     return Array(Math.floor(reps));
   }
 
+
+  public getDate(birthDate: string){
+    let fullDate =  new Date(birthDate);
+    let shortDate = `${fullDate.getMonth()}/${fullDate.getDay()} / ${fullDate.getFullYear()}`;
+    return shortDate;
+  }
 
   // Method that finds all reviews by a member and inserts them into a list that is reset
   // every time we query for all of this member's reviews.
@@ -157,21 +176,22 @@ export class AppComponent implements OnInit
       if (targetUser.password === pass)
       {
         this.memberService.loggedInMember = targetUser;
-        this.acceptedPassword = true;
+        // this.acceptedPassword = true;
         loginForm.reset();
         closeButton?.click();       // clicing close button to close form after 
       }                             // successful submission of data
       else
           this.acceptedPassword = false;
-
-      loginForm.reset();
-      // closeButton?.click();
     }
+    else
+      this.acceptedPassword = false;
+
+    loginForm.reset();
   }
 
   public onAddMember(addMemberForm: NgForm): void{
     let username = addMemberForm.value.username as string;
-    const closeButton = document.getElementById('addMemberCloseButton');
+    const closeButton = document.getElementById('signUpCloseButton');
 
     let targetUser = this.memberService.members.find( ({id}) => (id === username) ) as Member;
 
@@ -204,15 +224,116 @@ export class AppComponent implements OnInit
   
       closeButton?.click();
     }                             
-    else {
+    else 
       this.acceptedPassword = false;
-    }
 
   }
 
+  public onUpdateMember(updateMemberForm: NgForm): void{
+    const closeButton = document.getElementById('editProfileCloseButton');
+
+    let editedMember = {
+      id: updateMemberForm.value.editUsername,
+      password: updateMemberForm.value.editPassword,
+      firstName: updateMemberForm.value.editFirstName,
+      lastName: updateMemberForm.value.editLastName,
+      birthDate: new Date(updateMemberForm.value.editBirthDate).toString(),
+      locCity: updateMemberForm.value.editLocCity,
+      locState: updateMemberForm.value.editLocState,
+      locZipCode: updateMemberForm.value.editLocZipCode,
+      gender: updateMemberForm.value.editGender,
+      email: updateMemberForm.value.editEmail
+    }
+  
+    this.memberService.updateMember(editedMember).subscribe( 
+      (response: Member) => { 
+        updateMemberForm.reset();
+        let index = this.memberService.members.indexOf(this.memberService.loggedInMember,0);
+        this.memberService.loggedInMember = response;
+        this.memberService.members.splice(index,1);
+        this.memberService.members.push(response);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  
+    closeButton?.click();
+  }
+
+
+  public deleteReview(review: Review): void{
+    this.reviewService.deleteReview(review.rvId).subscribe( 
+      (response: void) => { 
+        let index = this.reviewService.reviews.indexOf(review,0);
+        this.reviewService.reviews.splice(index,1);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+
+  public deleteMemberReviews(member: Member): void{
+    for (let review of this.reviewService.reviews)
+      if (review.memberId === this.memberService.loggedInMember.id)
+        this.deleteReview(review);
+  }
+
+  
+  public onDeleteMember(): void{
+    const closeButton = document.getElementById("closeAccountCloseButton");
+
+    this.deleteMemberReviews(this.memberService.loggedInMember);
+    this.getReviews();
+
+    this.memberService.deleteMember(this.memberService.loggedInMember.id).subscribe( 
+      (response: void) => { 
+        let index = this.memberService.members.indexOf(this.memberService.loggedInMember,0);
+        this.memberService.members.splice(index,1);
+        this.onLogout();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+
+    closeButton?.click();
+  }
+
+
+  public setupDeleteReview(review: Review): void{
+    this.reviewToDelete = review;
+
+    const container = document.getElementById('mainContainer');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#deleteReviewModal');
+    container?.appendChild(button);    // added "?" because container could be null and this code is on "strict mode"
+    button.click();
+  }
+
+  public onDeleteReview(): void{
+    const closeButton = document.getElementById("deleteReviewCloseButton");
+
+    this.reviewService.deleteReview(this.reviewToDelete.rvId).subscribe( 
+      (response: void) => { 
+        this.getReviews();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+
+    closeButton?.click();
+
+  }
 
   public onLogout(): void{
-     this.memberService.loggedInMember = this.memberService.members.find( ({ id }) => id === "Guest" ) as Member;
+    this.memberService.loggedInMember = this.memberService.members.find( ({ id }) => id === "Guest" ) as Member;
   }
 
 
@@ -230,10 +351,17 @@ export class AppComponent implements OnInit
       button.setAttribute('data-target', '#myReviewsModal');
     }
     if (mode === 'logIn') {
+      this.acceptedPassword = true;
       button.setAttribute('data-target', '#logInModal');
     }
-    if (mode === 'addMember') {
-      button.setAttribute('data-target', '#addMemberModal');
+    if (mode === 'signUp') {
+      button.setAttribute('data-target', '#signUpModal');
+    }
+    if (mode === 'editProfile') {
+      button.setAttribute('data-target', '#editProfileModal');
+    }
+    if (mode === 'closeAccount') {
+      button.setAttribute('data-target', '#closeAccountModal');
     }
 
     container?.appendChild(button);    // added "?" because container could be null and this code is on "strict mode"

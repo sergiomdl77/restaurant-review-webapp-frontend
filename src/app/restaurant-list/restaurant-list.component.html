@@ -2,30 +2,31 @@
     <h2 style="text-align: center; margin: 2rem" >Restaurants to Review</h2> 
 </div>
 
-<div class="container" id="restaurantListContainer" style="width:50%">
+<div class="container" id="restaurantListContainer" style="width:50%;">
     <!-- Restaurant Entry -->
-    <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants" > 
-        <a href="#" class="member-img" style="width:10rem; height:10rem"> 
-            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
-            <i class="fa fa-forward"></i> 
-        </a> 
-
-        <div class="search-result-item-body">
+    <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants" style="min-width: 620px;"  > 
+        <div class="col-sm-3">
+            <a href="#" class="member-img" style="width:10rem; height:10rem"> 
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded" > 
+                <i class="fa fa-forward"></i> 
+            </a> 
+        </div>
+        <div class="search-result-item-body" style="padding-left:20px">
             <div class="row">
-                <div class="col-sm-9">
+                <div class="col-sm-9" style="max-width: 275px;">
                     <h4 class="search-result-item-heading"><a href="#"> {{restaurant.name}} </a></h4>
                     <p class="info"> {{restaurant.locCity}}, {{restaurant.locState}} {{restaurant.locZipCode}} </p>
                     <p class="info"> {{restaurant.foodType}} </p>
                     <p class="info"> {{restaurant.ambiance}} </p>
                 </div>
-                <div class="col-sm-3 text-align-center">
+                <div class="col-sm-3 text-align-center" style="min-width:120px; padding-left: 0px; float: left">
                     <p>
-                        <span style="margin:2px" *ngFor="let star of countArray(restaurant.priceLevel)">
+                        <span  *ngFor="let star of countArray(restaurant.priceLevel)"  style="margin:2px">
                            <img src="/assets/img/currency_dollar_green.png" height="22" width="22"> 
                         </span>
                     </p>
                     <p>
-                        <span style="margin:2px" *ngFor="let star of countArray(restaurant.avgScore)">
+                        <span  *ngFor="let star of countArray(restaurant.avgScore)"  style="margin:2px" >
                             <img src="/assets/img/star-fill.svg">
                         </span>
                     </p>

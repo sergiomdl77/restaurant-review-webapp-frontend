@@ -132,7 +132,7 @@ body{margin-top:20px;
     }
     @media screen and (max-width: 768px) {
       .member-entry .member-img {
-        width: 18%;
+        width: 10%;
       }
       .member-entry .member-details {
         width: 81.9%;

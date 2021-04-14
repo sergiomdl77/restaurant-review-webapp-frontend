@@ -12,23 +12,12 @@ import { ReviewService } from '../review.service';
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.css']
 })
-//export class MemberListComponent implements OnInit {
 export class MemberListComponent 
 {
-  // public restaurants: Restaurant[] = [];
-  // public reviews: Review[] = [];
-  // public members: Member[] = [];
   public reviewsFromMember: Review[] = [];
   public memberOfInterest: Member = {} as Member;
 
   constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
-
-  // ngOnInit() {
-  //   this.getRestaurants();
-  //   this.getReviews();
-  //   this.getMembers();
-  // }
-
 
   // Method used to create an array that will simple assist *ngFor as a counter to display an icon 
   // a number of times (reps times)
@@ -135,6 +124,18 @@ export class MemberListComponent
         this.reviewsFromMember.push(review);
     }
   }
+
+
+  public countReviesFromMember(member: Member): number {
+    let count = 0;
+
+    for (let review of this.reviewService.reviews)   // And now we form the list of reviews with restaurantId provided
+      if (review.memberId === member.id)
+        count++;
+        
+    return count;
+  }
+
 
 
   public onOpenModal(member: Member, mode: string): void {

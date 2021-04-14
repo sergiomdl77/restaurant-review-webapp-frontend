@@ -20,12 +20,12 @@
 
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <button class="btn btn-primary btn-info btn-sm" style="margin-top:4px; margin-right:15px; color:white" 
-              [disabled]="memberService.loggedInMember.id != 'Guest'" (click)="onOpenModal('addMember')">Sign Up
+          <button class="btn btn-primary btn-info btn-sm" style="margin-bottom: 12px; margin-top:6px; margin-right:15px; color:white" 
+              [disabled]="memberService.loggedInMember.id != 'Guest'" (click)="onOpenModal('signUp')">Sign Up
           </button>
         </li>
         <li class="nav-item active">
-          <button class="btn btn-outline-info btn-sm" style="margin-top:4px; margin-right:15px; color:teal; font-weight: bold"  
+          <button class="btn btn-outline-info btn-sm" style="margin-bottom: 8px; margin-top:6px; margin-right:15px; color:teal; font-weight: bold"  
               [disabled]="memberService.loggedInMember.id != 'Guest'" (click)="onOpenModal('logIn')">Log In
           </button>  
         </li>
@@ -42,7 +42,9 @@
             <span> <h3> <i class="bi bi-person-circle"></i> </h3> </span>
             <div class="dropdown-menu" aria-labelledby="userDropdown">
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myProfile')">My Profile</button>
+              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('editProfile')">Edit Profile</button>
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myReviews')">My Reviews</button>
+              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('closeAccount')">Close Account</button>
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onLogout()">Sign Out</button>
             </div>
 
@@ -58,8 +60,8 @@
 </div>
 
 
-<!--Add Member (MODAL)-->
-<div id="addMemberModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+<!--Sign Up (MODAL)-->
+<div id="signUpModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
@@ -67,7 +69,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         </div>
         <div class="modal-body">
-            <form #addMemberForm="ngForm" class="form col-md-12 center-block"  id="addMemberForm"  >
+            <form #signUpForm="ngForm" class="form col-md-12 center-block"  id="signUpForm"  >
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="username" id="username"
                     placeholder="Username (8 to 20 alphanumeric characters)" pattern="[A-Za-z0-9-_]{8,20}" required>
@@ -114,11 +116,11 @@
               </div>
 
               <div class="form-group">
-                <button (click)="onAddMember(addMemberForm)" class="btn btn-info btn-lg btn-block" type="submit" 
-                  [disabled]="addMemberForm.invalid" >Submit Information
+                <button (click)="onAddMember(signUpForm)" class="btn btn-info btn-lg btn-block" type="submit" 
+                  [disabled]="signUpForm.invalid" >Submit Information
                 </button>
               </div>
-              <div *ngIf="addMemberForm.invalid">
+              <div *ngIf="signUpForm.invalid">
                 <span style="color:teal">Submit button will be enabled when all fields have been properly completed.</span>
               </div>
               <div id="wrongPassword" *ngIf="acceptedPassword==false">
@@ -128,7 +130,7 @@
         </div>
         <div class="modal-footer">
             <div class="col-md-1accordion2">
-            <button id="addMemberCloseButton" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button id="signUpCloseButton" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>
           </div>	
         </div>
     </div>
@@ -208,13 +210,7 @@
       </div>
 
       <div class="modal-footer">
-          <div class="card-body">
-              <div class="float-right btn-group btn-group-md">
-                  <a  class="btn btn-primary btn-info btn-md" style="color:white;">Edit</a>
-              </div>
-          </div>
-
-          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button"  class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -225,8 +221,9 @@
   <div class="modal-dialog modal-lg" >
     <div class="modal-content" >
       <div class="modal-header">
-        <h4 class="modal-title" id="myReviewsLabel" style="font-weight:bold; color:teal"> {{ this.memberService.loggedInMember.id }}'s Reviews</h4>
-        <!-- <p>  ( {{ getReviewsFromMemberCount(memberOfInterest) }} posts )</p> -->
+        <h4 class="modal-title" id="myReviewsLabel" style="font-weight:bold; color:teal"> 
+          {{ this.memberService.loggedInMember.id }}'s Reviews
+        </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
           <span aria-hidden="true">&times;</span>
       </div>
@@ -246,6 +243,16 @@
                               </span>
                           </p>
                       </div>
+                      <div class="col-sm-3 text-align-center" style="min-width:120px; padding-left: 0px; float: left">
+                        <!-- <p style="margin-top:15px">
+                            <a (click)="onOpenModal(restaurant, 'reviewList')" class="btn btn-primary btn-info btn-sm" style="color:white;" >Edit Review</a>
+                        </p> -->
+                        <p style="margin-top:15px">
+                            <a (click)="setupDeleteReview(review)" class="btn btn-primary btn-info btn-sm" style="color:white;">Delete Review</a>
+                        </p>
+    
+                    </div>
+    
                   </div>
               </div>    
           </div>
@@ -274,6 +281,129 @@
       <div class="modal-footer">
         <div class="col-md-1accordion2">
           <button class="btn btn-primary btn-info btn-sm" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>	
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Edit Profile (MODAL)-->
+<div id="editProfileModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="text-center">Edit Profile</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+            <form #editProfileForm="ngForm" class="form col-md-12 center-block"  id="editProfileForm"  >
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.id}}" type="hidden" class="form-control input-lg"  
+                    name="editUsername" id="editUsername"   pattern="[A-Za-z0-9-_]{8,20}" >
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.password}}" type="hidden" class="form-control input-lg"  
+                    name="editPassword" id="editPassword" pattern=".{3,20}" >
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.firstName}}" type="text" class="form-control input-lg"  
+                    name="editFirstName" id="editFirstName" pattern="[A-Za-z]{1,30}" required>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.lastName}}" type="text" class="form-control input-lg"  
+                    name="editLastName" id="editLastName" pattern="[A-Za-z]{1,30}" required>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{ getDate(memberService.loggedInMember.birthDate) }}" type="date" class="form-control input-lg"  
+                    name="editBirthDate" id="editBirthDate" required>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.locCity}}" type="text" class="form-control input-lg"  
+                    name="editLocCity" id="editLocCity" pattern="[A-Za-z]{1,30}" required>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.locState}}" type="text" class="form-control input-lg"  
+                    name="editLocState" id="editLocState" pattern="[A-Za-z]{2}" required>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.locZipCode}}" type="text" class="form-control input-lg"  
+                    name="editLocZipCode" id="editLocZipCode" pattern="[0-9]{5}" required>
+              </div>
+              <div class="form-group">
+                  <input style="margin:5px" ngModel type="radio" id="editMaleOption" name="editGender" value="Male" required>
+                  <label style="margin-right:10px" for="editMaleOption">  Male </label>
+                  <input style="margin:5px" ngModel type="radio" id="editFemaleOption" name="editGender" value="Female" required>
+                  <label style="margin-right:10px" for="editFemaleOption">  Female </label>
+                  <input style="margin:5px" ngModel type="radio" id="otherOption" name="editGender" value="Other" required>
+                  <label style="margin-right:10px" for="editOtherOption">  Other </label>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.email}}" type="text" class="form-control input-lg"  
+                    name="editEmail" id="editEmail"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+              </div>
+
+              <div class="form-group">
+                <!-- [disabled]="updateMemberForm.invalid" >Save Changes -->
+                <button (click)="onUpdateMember(editProfileForm)" class="btn btn-info btn-lg btn-block" type="submit" 
+                     >Save Changes
+                </button>
+              </div>
+              <!-- <div *ngIf="editProfileForm.invalid">
+                <span style="color:teal">"Save Changes" button will be enabled when all fields have been properly completed.</span>
+              </div> -->
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="col-md-1accordion2">
+            <button id="editProfileCloseButton" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          </div>	
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Terminate Account (MODAL) -->
+<div class="modal fade" id="closeAccountModal" tabindex="-1" aria-labelledby="closeAccountLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h4 class="modal-title" id="closeAccountLabel" style="font-weight:bold; color:teal"> Terminate {{ this.memberService.loggedInMember.id }}'s Account</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          <span aria-hidden="true">&times;</span>
+      </div>
+      <div class="modal-body" >
+        <h6 style="text-align: center;">Are you sure you want to terminate your account?. </h6> 
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-1accordion2">
+          <button (click)="onDeleteMember()" class="btn btn-primary btn-info btn-md" data-dismiss="modal" aria-hidden="true">Terminate</button>
+        </div>	
+        <div class="col-md-1accordion2">
+          <button id="closeAccountCloseButton" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        </div>	
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Review (MODAL) -->
+<div class="modal fade" id="deleteReviewModal" tabindex="-1" aria-labelledby="deleteReviewLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h4 class="modal-title" id="deleteReviewLabel" style="font-weight:bold; color:teal"> Delete Review</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          <span aria-hidden="true">&times;</span>
+      </div>
+      <div class="modal-body" >
+        <h6 style="text-align: center;">Are you sure you want to delete this review?. </h6> 
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-1accordion2">
+          <button (click)="onDeleteReview()" class="btn btn-primary btn-info btn-md" data-dismiss="modal" aria-hidden="true">Delete</button>
+        </div>	
+        <div class="col-md-1accordion2">
+          <button id="deleteReviewCloseButton" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>
         </div>	
       </div>
     </div>

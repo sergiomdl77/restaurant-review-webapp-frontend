@@ -8,7 +8,8 @@
 
         <!-- Member Entry -->
         <div *ngFor="let member of memberService.members">    
-            <div class="card m-b-30" style="width: 25rem; margin:2rem;" *ngIf="member.id != memberService.loggedInMember.id">
+            <div class="card m-b-30" style="width: 25rem; margin:2rem;" 
+               *ngIf="member.id != memberService.loggedInMember.id && member.id != 'Guest'">
                 <div class="card-body row">
                     <div class="col-6" >
                         <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="img-fluid rounded-circle w-60"></a>
@@ -23,8 +24,7 @@
                     <li class="list-group-item">Gender : {{ member.gender }}</li>
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#"> {{ member.email }}</a></li>
                     <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ getShortBirthdate( member.id )  }}</li>
-                    <!-- This next line causes this template to call setReviewsFromMember() many many unnecessary times -->
-                    <!-- <li class="list-group-item">{{ getReviewsFromMemberCount(member) }} Reviews posted.</li>  -->
+                    <li class="list-group-item">Reviews posted : {{ countReviesFromMember(member) }} </li> 
                 </ul>
                 <div class="card-body">
                     <div class="float-right btn-group btn-group-sm">
