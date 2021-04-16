@@ -17,21 +17,11 @@ import { NgForm } from '@angular/forms';
 // export class RestaurantListComponent implements OnInit 
 export class RestaurantListComponent 
 {
-  // public restaurants: Restaurant[] = [];
-  // public reviews: Review[] = [];
-  // public members: Member[] = [];
   public reviewsOnRestaurant: Review[] = [];
   public restaurantOfInterest: Restaurant = {} as Restaurant;    
   public memberOnReview = {} as Member;
 
   constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
-
-  //Setting up my all the necessary data from the database for its use in the component's template.
-  // ngOnInit() {
-  //   this.getRestaurants();
-  //   this.getReviews();
-  //   this.getMembers();
-  // }
 
 
   // Method used to create an array that will simple assist *ngFor as a counter to display an icon 
@@ -93,6 +83,23 @@ public getMemberLocation(memberId: string): string{
   return location;
 }
 
+
+public getAvgScore(restaurantId: number): number{
+  let scoreSum = 0;
+  let count = 0;
+
+  for (let review of this.reviewService.reviews)
+    if (review.restaurantId === restaurantId)
+    {
+      scoreSum += review.score;
+      count++;
+    }
+
+  if (count == 0)
+    return 3;     // If there are no reviews yeat we simply assign 3 stars by default.
+  else  
+    return scoreSum/count;
+}
 
   // Method that sets property "reviewsByRestaurantId" with the list of restaurants that 
   // are currently persisted on the database and match the restaurantId provided.  This

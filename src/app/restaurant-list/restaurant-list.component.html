@@ -5,9 +5,9 @@
 <div class="container" id="restaurantListContainer" style="width:50%;">
     <!-- Restaurant Entry -->
     <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants" style="min-width: 620px;"  > 
-        <div class="col-sm-3">
+        <div class="col-sm-3" >
             <a href="#" class="member-img" style="width:10rem; height:10rem"> 
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded" > 
+                <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"  class="img-rounded" > 
                 <i class="fa fa-forward"></i> 
             </a> 
         </div>
@@ -26,7 +26,7 @@
                         </span>
                     </p>
                     <p>
-                        <span  *ngFor="let star of countArray(restaurant.avgScore)"  style="margin:2px" >
+                        <span  *ngFor="let star of countArray( getAvgScore(restaurant.id))"  style="margin:2px" >
                             <img src="/assets/img/star-fill.svg">
                         </span>
                     </p>
@@ -85,7 +85,7 @@
     </div>
 </div>
     
-<!-- Modal to Add a review for a specific restaurant  -->
+<!-- Add review (Modal) for a specific restaurant  -->
 <div id="addReviewModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -140,6 +140,10 @@
                 <button (click)="onAddReview(addReviewForm)" data-dismiss="modal" class="btn btn-info btn-lg btn-block" 
                     type="submit" [disabled]="addReviewForm.invalid" >Submit Review</button>
               </div>
+              <div *ngIf="addReviewForm.invalid">
+                <span style="color:teal">Submit Review button will be enabled when form fields have been properly completed.</span>
+              </div>
+
             </form>
         </div>
         <div class="modal-footer">
@@ -151,22 +155,22 @@
   </div>
 </div>
 
-<!-- Modal to show message after denying permission to add Review from Guest User  -->
+<!-- Denial to Add Review as Guest User  -->
 <div id="addReviewDeniedModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h3 class="text-center">Become a Member</h3>
+              <h1 class="text-center">Become a Member</h1>
               <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
           </div>
           <div class="modal-body">
               <h6>As a Guest User you are not allowed to add reviews. </h6> 
-              <h6>We would love to know about your opinion on restaurants.</h6> 
+              <h6>We would love to know your opinion on restaurants.</h6> 
               <h6>SIGN UP to become a member and let's hear about your dining experiences.</h6> 
           </div>
           <div class="modal-footer">
               <div class="col-md-1accordion2">
-              <button class="btn btn-primary btn-info btn-sm" data-dismiss="modal" aria-hidden="true">Close</button>
+              <button class="btn btn-primary btn-info btn-md" data-dismiss="modal" aria-hidden="true">Close</button>
               </div>	
           </div>
       </div>

@@ -247,10 +247,8 @@ export class AppComponent implements OnInit
   
     this.memberService.updateMember(editedMember).subscribe( 
       (response: Member) => { 
-        // updateMemberForm.reset();
-        this.memberService.loggedInMember = editedMember;
         let index = this.memberService.members.indexOf(this.memberService.loggedInMember,0);
-        // this.memberService.loggedInMember = response;
+        this.memberService.loggedInMember = editedMember;
         this.memberService.members.splice(index,1);
         this.memberService.members.push(response);
       },

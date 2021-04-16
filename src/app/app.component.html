@@ -80,27 +80,32 @@
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="firstName" id="firstName"
-                    placeholder="First Name" pattern="[A-Za-z]{1,30}" required>
+                    placeholder="First Name" pattern="[A-Za-z]{1,30}" required  > 
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="lastName" id="lastName"
                     placeholder="Last Name" pattern="[A-Za-z]{1,30}" required>
               </div>
               <div class="form-group">
-                <input ngModel type="date" class="form-control input-lg"  name="birthDate" id="birthDate"
-                    placeholder="Birthdate" required>
-              </div>
-              <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="locCity" id="locCity"
-                    placeholder="Your City" pattern="[A-Za-z]{1,30}" required>
+                    placeholder="City" pattern="[A-Za-z]{1,30}" required>
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="locState" id="locState"
-                    placeholder="Your State (2 letter format)" pattern="[A-Za-z]{2}" required>
+                    placeholder="State (2 letter format)" pattern="[A-Za-z]{2}" required>
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="locZipCode" id="locZipCode"
-                    placeholder="Your Zip Code (5 digit format)" pattern="[0-9]{5}" required>
+                    placeholder="Zip Code (5 digit format)" pattern="[0-9]{5}" required>
+              </div>
+              <div class="form-group">
+                <input ngModel type="text" class="form-control input-lg"  name="email" id="email" 
+                    placeholder="Email Adress" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+              </div>
+              <div class="form-group">
+                <label for="birthDate"> Date of Birth: </label> 
+                <input ngModel type="date" class="form-control input-me"  name="birthDate" id="birthDate"
+                    placeholder="Birthdate" required> 
               </div>
               <div class="form-group">
                   <input style="margin:5px" ngModel type="radio" id="maleOption" name="gender" value="Male" required>
@@ -109,10 +114,6 @@
                   <label style="margin-right:10px" for="femaleOption">  Female </label>
                   <input style="margin:5px" ngModel type="radio" id="otherOption" name="gender" value="Other" required>
                   <label style="margin-right:10px" for="otherOption">  Other </label>
-              </div>
-              <div class="form-group">
-                <input ngModel type="text" class="form-control input-lg"  name="email" id="email" 
-                    placeholder="Email Adress" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
               </div>
 
               <div class="form-group">
@@ -303,49 +304,52 @@
               </div>
               <div class="form-group">
                 <input ngModel="{{memberService.loggedInMember.password}}" type="hidden" class="form-control input-lg"  
-                    name="editPassword" id="editPassword" pattern=".{3,20}" >
+                    name="editPassword" id="editPassword" pattern=".{3,20}"  >
               </div>
               <div class="form-group">
                 <input ngModel="{{memberService.loggedInMember.firstName}}" type="text" class="form-control input-lg"  
-                    name="editFirstName" id="editFirstName" pattern="[A-Za-z]{1,30}" required>
+                   placeholder="First Name" name="editFirstName" id="editFirstName" pattern="[A-Za-z]{1,30}" required>
               </div>
               <div class="form-group">
                 <input ngModel="{{memberService.loggedInMember.lastName}}" type="text" class="form-control input-lg"  
-                    name="editLastName" id="editLastName" pattern="[A-Za-z]{1,30}" required>
+                    placeholder="Last Name" name="editLastName" id="editLastName" pattern="[A-Za-z]{1,30}" required>
               </div>
               <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.locCity}}" type="text" class="form-control input-lg"  
+                    placeholder="City" name="editLocCity" id="editLocCity" pattern="[A-Za-z]{1,30}" required>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.locState}}" type="text" class="form-control input-lg"  
+                    placeholder="State (2 letter format)" name="editLocState" id="editLocState" pattern="[A-Za-z]{2}" required>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.locZipCode}}" type="text" class="form-control input-lg"  
+                    placeholder="Zip Code (5 digit format)" name="editLocZipCode" id="editLocZipCode" pattern="[0-9]{5}" required>
+              </div>
+              <div class="form-group">
+                <input ngModel="{{memberService.loggedInMember.email}}" type="text" class="form-control input-lg"  
+                    placeholder="Email Address" name="editEmail" id="editEmail"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+              </div>
+              <div class="form-group">
+                <label for="editBirthDate"> Date of Birth: </label> 
                 <input ngModel="{{ getDate(memberService.loggedInMember.birthDate) }}" type="date" class="form-control input-lg"  
                     name="editBirthDate" id="editBirthDate" required>
               </div>
               <div class="form-group">
-                <input ngModel="{{memberService.loggedInMember.locCity}}" type="text" class="form-control input-lg"  
-                    name="editLocCity" id="editLocCity" pattern="[A-Za-z]{1,30}" required>
-              </div>
-              <div class="form-group">
-                <input ngModel="{{memberService.loggedInMember.locState}}" type="text" class="form-control input-lg"  
-                    name="editLocState" id="editLocState" pattern="[A-Za-z]{2}" required>
-              </div>
-              <div class="form-group">
-                <input ngModel="{{memberService.loggedInMember.locZipCode}}" type="text" class="form-control input-lg"  
-                    name="editLocZipCode" id="editLocZipCode" pattern="[0-9]{5}" required>
-              </div>
-              <div class="form-group">
-                  <input style="margin:5px" ngModel type="radio" id="editMaleOption" name="editGender" value="Male" required>
+                  <input style="margin:5px" ngModel type="radio" id="editMaleOption" name="editGender" value="Male" 
+                      [checked]="memberService.loggedInMember.gender === 'Male'"  required>
                   <label style="margin-right:10px" for="editMaleOption">  Male </label>
-                  <input style="margin:5px" ngModel type="radio" id="editFemaleOption" name="editGender" value="Female" required>
+                  <input style="margin:5px" ngModel type="radio" id="editFemaleOption" name="editGender" value="Female" 
+                      [checked]="memberService.loggedInMember.gender === 'Female'" required>
                   <label style="margin-right:10px" for="editFemaleOption">  Female </label>
-                  <input style="margin:5px" ngModel type="radio" id="otherOption" name="editGender" value="Other" required>
+                  <input style="margin:5px" ngModel type="radio" id="editOtherOption" name="editGender" value="Other" 
+                      [checked]="memberService.loggedInMember.gender === 'Other'" required>
                   <label style="margin-right:10px" for="editOtherOption">  Other </label>
-              </div>
-              <div class="form-group">
-                <input ngModel="{{memberService.loggedInMember.email}}" type="text" class="form-control input-lg"  
-                    name="editEmail" id="editEmail"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
               </div>
 
               <div class="form-group">
-                <!-- [disabled]="updateMemberForm.invalid" >Save Changes -->
-                <button (click)="onUpdateMember(editProfileForm)" class="btn btn-info btn-lg btn-block" type="submit" 
-                     >Save Changes
+                <button (click)="onUpdateMember(editProfileForm)" class="btn btn-info btn-lg btn-block" type="submit" >
+                    Save Changes
                 </button>
               </div>
               <!-- <div *ngIf="editProfileForm.invalid">
