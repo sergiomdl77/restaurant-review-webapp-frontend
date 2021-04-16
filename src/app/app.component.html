@@ -88,7 +88,7 @@
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="locCity" id="locCity"
-                    placeholder="City" pattern="[A-Za-z]{1,30}" required>
+                    placeholder="City" pattern="[A-Za-z ]{1,30}" required>
               </div>
               <div class="form-group">
                 <input ngModel type="text" class="form-control input-lg"  name="locState" id="locState"
@@ -316,7 +316,7 @@
               </div>
               <div class="form-group">
                 <input ngModel="{{memberService.loggedInMember.locCity}}" type="text" class="form-control input-lg"  
-                    placeholder="City" name="editLocCity" id="editLocCity" pattern="[A-Za-z]{1,30}" required>
+                    placeholder="City" name="editLocCity" id="editLocCity" pattern="[A-Za-z ]{1,30}" required>
               </div>
               <div class="form-group">
                 <input ngModel="{{memberService.loggedInMember.locState}}" type="text" class="form-control input-lg"  

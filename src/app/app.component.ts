@@ -198,13 +198,13 @@ export class AppComponent implements OnInit
     if (!targetUser) {      // if there is no member with that username yet...
 
       let newMember = {
-        id: addMemberForm.value.username,
+        id: addMemberForm.value.username.toLowerCase(),
         password: addMemberForm.value.password,
         firstName: addMemberForm.value.firstName,
         lastName: addMemberForm.value.lastName,
         birthDate: new Date(addMemberForm.value.birthDate).toString(),
         locCity: addMemberForm.value.locCity,
-        locState: addMemberForm.value.locState,
+        locState: addMemberForm.value.locState.toUpperCase(),
         locZipCode: addMemberForm.value.locZipCode,
         gender: addMemberForm.value.gender,
         email: addMemberForm.value.email
@@ -239,7 +239,7 @@ export class AppComponent implements OnInit
       lastName: updateMemberForm.value.editLastName,
       birthDate: new Date(updateMemberForm.value.editBirthDate).toString(),
       locCity: updateMemberForm.value.editLocCity,
-      locState: updateMemberForm.value.editLocState,
+      locState: updateMemberForm.value.editLocState.toUpperCase(),
       locZipCode: updateMemberForm.value.editLocZipCode,
       gender: updateMemberForm.value.editGender,
       email: updateMemberForm.value.editEmail
