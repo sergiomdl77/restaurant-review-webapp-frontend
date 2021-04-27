@@ -98,7 +98,7 @@ public getAvgScore(restaurantId: number): number{
   if (count == 0)
     return 3;     // If there are no reviews yeat we simply assign 3 stars by default.
   else  
-    return scoreSum/count;
+    return (Math.floor(scoreSum/count));
 }
 
   // Method that sets property "reviewsByRestaurantId" with the list of restaurants that 

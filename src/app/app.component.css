@@ -4,7 +4,9 @@
 
 /* CUSTOM STYLES FOR RESTAURANT LIST */
 
-/* from snippet:   https://www.bootdey.com/snippets/view/Members */
+/* from snippet:   https://www.bootdey.com/snippets/view/Members 
+   USED TO DISPLAY MEMBER LISTING*/
+
 body{margin-top:20px;
     background:#eee;
     }
@@ -184,7 +186,9 @@ body{margin-top:20px;
       }
     }
     
-    /* from snippet:  https://www.bootdey.com/snippets/view/Search-users-page-result */
+    /* from snippet:  https://www.bootdey.com/snippets/view/Search-users-page-result  
+       USED TO DISPLAY RESTAURANT LISTING */
+
     body{margin-top:20px;
         background-color: #eee;
         }
@@ -248,7 +252,7 @@ body{margin-top:20px;
                 max-height: 200px
             }
         }
-        
+
         .search-result-item .image {
             max-width: 100%
         }
@@ -266,13 +270,13 @@ body{margin-top:20px;
         .search-result-item+.search-result-item {
             margin-top: 20px
         }
-        
+    
         @media (min-width:768px) {
             .search-result-item-body {
                 margin-left: 200px
             }
-        }
-        
+        } 
+
         .search-result-item-heading {
             font-weight: 400
         }

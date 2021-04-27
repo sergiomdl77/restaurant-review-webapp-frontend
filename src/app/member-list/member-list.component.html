@@ -11,12 +11,18 @@
             <div class="card m-b-30" style="width: 25rem; margin:2rem;" 
                *ngIf="member.id != memberService.loggedInMember.id && member.id != 'Guest'">
                 <div class="card-body row">
-                    <div class="col-6" >
+                    <div class="col-6" *ngIf="member.gender == 'Female'">
                         <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="" class="img-fluid rounded-circle w-60"></a>
                     </div>
+                    <div class="col-6" *ngIf="member.gender == 'Male'">
+                        <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+                    <div class="col-6" *ngIf="member.gender == 'Other'">
+                        <a  href=""><img src="https://icon-library.net//images/no-user-image-icon/no-user-image-icon-27.jpg" width="350" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+
                     <div class="col-6 card-title align-self-center mb-0">
                         <h5 style="font-weight: bold;"> {{ member.id }}</h5>
-                        <!-- <p class="m-0"> {{ member.locCity }}, {{ member.locState }} {{ member.locZipCode }}</p> -->
                         <p class="m-0" style="color:grey"> {{ getMemberLocation(member.id) }}</p>
                     </div>
                 </div>

@@ -2,10 +2,12 @@
     <h2 style="text-align: center; margin: 2rem" >Restaurants to Review</h2> 
 </div>
 
-<div class="container" id="restaurantListContainer" style="width:50%;">
+<div class="container" id="restaurantListContainer" style="width:70%; max-width: 768px; min-width: 620px ; justify-content: center" >
     <!-- Restaurant Entry -->
-    <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants" style="min-width: 620px;"  > 
-        <div class="col-sm-3" >
+    <!-- <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants" style="min-width: 620px;"  > -->
+    <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants " > 
+    
+        <div class="col-sm-3" style="width:11rem" >
             <a href="#" class="member-img" style="width:10rem; height:10rem"> 
                 <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"  class="img-rounded" > 
                 <i class="fa fa-forward"></i> 
@@ -14,21 +16,30 @@
         <div class="search-result-item-body" style="padding-left:20px">
             <div class="row">
                 <div class="col-sm-9" style="max-width: 275px;">
-                    <h4 class="search-result-item-heading"><a href="#"> {{restaurant.name}} </a></h4>
+                    <h4 class="search-result-item-heading" style="font-weight: bold"><a href="#"> {{restaurant.name}} </a></h4>
                     <p class="info"> {{restaurant.locCity}}, {{restaurant.locState}} {{restaurant.locZipCode}} </p>
-                    <p class="info"> {{restaurant.foodType}} </p>
-                    <p class="info"> {{restaurant.ambiance}} </p>
+                    <p class="info"> Cuisine: {{restaurant.foodType}} </p>
+                    <p class="info"> Ambiance: {{restaurant.ambiance}} </p>
                 </div>
                 <div class="col-sm-3 text-align-center" style="min-width:120px; padding-left: 0px; float: left">
+                    <p style="margin:0px; padding:0px; font-size: small;" > Price</p>
                     <p>
-                        <span  *ngFor="let star of countArray(restaurant.priceLevel)"  style="margin:2px">
+                        <span  *ngFor="let coin of countArray(restaurant.priceLevel)"  style="margin:2px">
                            <img src="/assets/img/currency_dollar_green.png" height="22" width="22"> 
                         </span>
+                        <span  *ngFor="let coin of countArray( 3 - restaurant.priceLevel)"  style="margin:2px">
+                            <img src="/assets/img/currency_dollar_shade.png" height="22" width="22"> 
+                         </span>
                     </p>
+                    <p style="margin:0px; padding:0px; font-size: small;" > Grade</p>
                     <p>
-                        <span  *ngFor="let star of countArray( getAvgScore(restaurant.id))"  style="margin:2px" >
+                        <span  *ngFor="let yellowStar of countArray( getAvgScore(restaurant.id))"  style="margin:2px" >
                             <img src="/assets/img/star-fill.svg">
                         </span>
+                        <span  *ngFor="let grayStar of countArray( 5 - getAvgScore(restaurant.id))"  style="margin:2px" >
+                            <img src="/assets/img/star-fill-shade.svg">
+                        </span>
+
                     </p>
                     <p style="margin-top:15px">
                         <a (click)="onOpenModal(restaurant, 'reviewList')" class="btn btn-primary btn-info btn-sm" style="color:white;" >Reviews</a>
