@@ -1,11 +1,7 @@
-<div class="row bootstrap snippets bootdeys" style="justify-content: center"> 
-    <h2 style="text-align: center; margin: 2rem" >Restaurants to Review</h2> 
-</div>
 
-<div class="container" id="restaurantListContainer" style="width:70%; max-width: 768px; min-width: 620px ; justify-content: center" >
+<div class="container" id="restaurantListContainer" style="width:90%; max-width: 768px; min-width: 620px ; justify-content: center" >
     <!-- Restaurant Entry -->
-    <!-- <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants" style="min-width: 620px;"  > -->
-    <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurants " > 
+    <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurantSearchResults " > 
     
         <div class="col-sm-3" style="width:11rem" >
             <a href="#" class="member-img" style="width:10rem; height:10rem"> 
@@ -22,7 +18,7 @@
                     <p class="info"> Ambiance: {{restaurant.ambiance}} </p>
                 </div>
                 <div class="col-sm-3 text-align-center" style="min-width:120px; padding-left: 0px; float: left">
-                    <p style="margin:0px; padding:0px; font-size: small;" > Price</p>
+                    <p style="margin:0px; padding:0px; font-size: small;" > Price </p>
                     <p>
                         <span  *ngFor="let coin of countArray(restaurant.priceLevel)"  style="margin:2px">
                            <img src="/assets/img/currency_dollar_green.png" height="22" width="22"> 
@@ -31,7 +27,7 @@
                             <img src="/assets/img/currency_dollar_shade.png" height="22" width="22"> 
                          </span>
                     </p>
-                    <p style="margin:0px; padding:0px; font-size: small;" > Grade</p>
+                    <p style="margin:0px; padding:0px; font-size: small;" > Rating </p>
                     <p>
                         <span  *ngFor="let yellowStar of countArray( getAvgScore(restaurant.id))"  style="margin:2px" >
                             <img src="/assets/img/star-fill.svg">

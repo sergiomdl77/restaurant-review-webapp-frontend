@@ -15,6 +15,8 @@ export class RestaurantService
 {
     private apiServerUrl = environment.apiBaseUrl;
     public restaurants: Restaurant[] = [];
+    public restaurantSearchResults: Restaurant[] = [];
+
 
     // Injecting the built in HttpClient to make http requests to backend
     constructor(private http: HttpClient) {}

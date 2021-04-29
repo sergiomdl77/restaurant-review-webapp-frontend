@@ -33,6 +33,7 @@ export class AppComponent implements OnInit
     this.restaurantService.getAllRestaurants().subscribe(
       (response: Restaurant[]) => {
         this.restaurantService.restaurants = response;
+        this.restaurantService.restaurantSearchResults = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit
   }
 
 
-  // Method that sets property "reviews" with the complete list of restaurants that are 
+  // Method that sets property "reviews" with the complete list of reviews that are 
   // currently persisted on the database
   public getReviews(): void {
     this.reviewService.getAllReviews().subscribe(
@@ -55,8 +56,23 @@ export class AppComponent implements OnInit
   }
 
 
-  // Method that sets injected memberService with the complete list of restaurants that are 
+  // Method that sets injected memberService with the complete list of members that are 
   // currently persisted on the database at the moment of initializing the component
+  public getMembers(): void {
+    this.memberService.getAllMembers().subscribe(
+      (response: Member[]) => {
+        this.memberService.members = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+
+  // Method that sets injected memberService with the complete list of members that are 
+  // currently persisted on the database at the moment of initializing the component. This
+  // method also adds a "Guest" member to the list of members.
   public getMembersForInit(): void {
     this.memberService.getAllMembers().subscribe(
       (response: Member[]) => {
@@ -88,17 +104,9 @@ export class AppComponent implements OnInit
   }
 
 
-  // Method that sets injected memberService with the complete list of restaurants that are 
-  // currently persisted on the database at the moment of initializing the component
-  public getMembers(): void {
-    this.memberService.getAllMembers().subscribe(
-      (response: Member[]) => {
-        this.memberService.members = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
+  // Method that resets the restaurant Results to all display all currently persisted restaurants
+  public resetRestaurantResults(): void{
+    this.restaurantService.restaurantSearchResults = this.restaurantService.restaurants;
   }
 
 

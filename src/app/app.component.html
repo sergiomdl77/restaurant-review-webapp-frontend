@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="restaurants">Restaurants<span class="sr-only">(current)</span></a>
+          <a class="nav-link"  routerLink="restaurants">Restaurants<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" routerLink="members">Members<span class="sr-only">(current)</span></a>
@@ -54,8 +54,9 @@
 
     </div>
   </nav>
-  
-  <router-outlet></router-outlet>
+
+  <!-- Eather Restaurant Page or Member Listing Page (depending on route chosen by client)-->
+  <router-outlet (activate)="resetRestaurantResults()"></router-outlet>
 
 </div>
 

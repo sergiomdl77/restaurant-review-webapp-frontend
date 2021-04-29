@@ -1,3 +1,214 @@
-<div>
-    <restaurant-list></restaurant-list>
+
+<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> -->
+<div class="container">
+<div class="row">
+
+  <!-- The Restaurant Listing and Filtering Page -->
+  <div class="col-md-12">
+    <div class="grid search">
+      <div class="grid-body">
+        <div class="row">
+
+          <!-- Filters Bar -->
+          <div class="col-md-3" style="background-color: lightgray;">
+            <h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
+            <hr>
+            
+            <form #filtersForm="ngForm"  >
+
+                <div class="input-group">
+                    <input type="text" ngModel class="form-control" name="restName" id="restName"
+                       placeholder="Search restaurant by name..." (ngModelChange)="applyFilters(filtersForm)">
+                </div>
+
+                <!-- PRICE Filter -->
+                <h4 style="margin-top:12px">By Price:</h4>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="lowPriceOption" id="lowPriceOption"
+                      (ngModelChange)="applyFilters(filtersForm)">
+                        <span  *ngFor="let coin of countArray(1)"  style="margin:0px">
+                            <img src="/assets/img/currency_dollar_green.png" height="22" width="22"> 
+                        </span>
+                        Low
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="mediumPriceOption" id="mediumPriceOption" 
+                      (ngModelChange)="applyFilters(filtersForm)"> 
+                        <span  *ngFor="let coin of countArray(2)"  style="margin:0px">
+                            <img src="/assets/img/currency_dollar_green.png" height="22" width="22"> 
+                        </span>
+                        Medium
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="highPriceOption" id="highPriceOption" 
+                      (ngModelChange)="applyFilters(filtersForm)"> 
+                        <span  *ngFor="let coin of countArray(3)"  style="margin:0px">
+                            <img src="/assets/img/currency_dollar_green.png" height="22" width="22"> 
+                        </span>
+                        High
+                    </label>
+                </div>
+
+                <!-- RATING Filter -->
+                <h4 style="margin-top:12px">By Rating:</h4>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="oneStar" id="oneStar"
+                      (ngModelChange)="applyFilters(filtersForm)"> 
+                      <span style="margin:2px" *ngFor="let star of countArray(1)">
+                        <img src="/assets/img/star-fill.svg">
+                      </span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="twoStars" id="twoStars" 
+                      (ngModelChange)="applyFilters(filtersForm)"> 
+                      <span style="margin:2px" *ngFor="let star of countArray(2)">
+                        <img src="/assets/img/star-fill.svg">
+                      </span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="threeStars" id="threeStars" 
+                      (ngModelChange)="applyFilters(filtersForm)">
+                        <span style="margin:2px" *ngFor="let star of countArray(3)">
+                            <img src="/assets/img/star-fill.svg">
+                        </span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="fourStars" id="fourStars" 
+                      (ngModelChange)="applyFilters(filtersForm)">
+                        <span style="margin:2px" *ngFor="let star of countArray(4)">
+                            <img src="/assets/img/star-fill.svg">
+                        </span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="fiveStars" id="fiveStars" 
+                      (ngModelChange)="applyFilters(filtersForm)">
+                        <span style="margin:2px" *ngFor="let star of countArray(5)">
+                            <img src="/assets/img/star-fill.svg">
+                        </span>
+                    </label>
+                </div>
+
+                <!-- AMBIANCE Filter-->
+                <h4 style="margin-top:12px">By Ambiance:</h4>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="casualOption" id="casualOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Casual
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="semiCasualOption" id="semiCasualOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Semi Casual
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="formalOption" id="formalOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Formal
+                    </label>
+                </div>
+
+                <!-- CUISINE Filter-->
+                <h4 style="margin-top:12px">By Cuisine:</h4>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="italianOption" id="italianOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Italian
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="chineseOption" id="chineseOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Chinese
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="texMexOption" id="texMexOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Tex Mex
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="indianOption" id="indianOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Indian
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="steakHouseOption" id="steakHouseOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Steak House
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ngModel class="icheck" name="seafoodOption" id="seafoodOption"
+                    (ngModelChange)="applyFilters(filtersForm)">
+                        Seafood
+                    </label>
+                </div>
+
+            </form>
+
+          </div>
+          <!-- End of Filters Bar -->
+
+
+          <!-- Begin Results Side -->
+          <div class="col-lg-9">
+            <h2 style="text-align: center; margin: 2rem" >Restaurants to Review</h2> 
+            <hr>
+            <!-- SEARCH Input -->
+            <!-- <div class="input-group">
+              <input type="text" class="form-control" value="web development">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+              </span>
+            </div> -->
+
+            <!-- RESULTS Page -->
+            <p>Showing all results</p>
+            
+            <div class="padding"></div>
+            
+            <div class="row">
+              <!-- BEGIN ORDER RESULT -->
+              <!-- <div class="col-sm-6">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Order by <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li class="btn">Name</li>
+                    <li class="btn">Date</li>
+                    <li class="btn">View</li>
+                    <li class="btn">Rating</li>
+                  </ul>
+                </div>
+              </div> -->
+              <!-- END ORDER RESULT -->
+              
+            </div>
+            
+            <!-- Result List -->
+            <div>
+                <restaurant-list></restaurant-list>
+            </div>
+            <!-- END TABLE RESULT -->
+            
+          </div>
+          <!-- END RESULT -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END of Filtering Page -->
 </div>
+</div>
+
