@@ -7,7 +7,7 @@
     <div class="row" style="display: flex; justify-content: center" >
 
         <!-- Member Entry -->
-        <div *ngFor="let member of memberService.members">    
+        <div *ngFor="let member of memberService.memberSearchResults">    
             <div class="card m-b-30" style="width: 25rem; margin:2rem;" 
                *ngIf="member.id != memberService.loggedInMember.id && member.id != 'Guest'">
                 <div class="card-body row">
@@ -18,7 +18,7 @@
                         <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="img-fluid rounded-circle w-60"></a>
                     </div>
                     <div class="col-6" *ngIf="member.gender == 'Other'">
-                        <a  href=""><img src="https://icon-library.net//images/no-user-image-icon/no-user-image-icon-27.jpg" width="350" alt="" class="img-fluid rounded-circle w-60"></a>
+                        <a  href=""><img src="/assets/img/anonymous_user_grey.png" width="350" alt="" class="img-fluid rounded-circle w-60"></a>
                     </div>
 
                     <div class="col-6 card-title align-self-center mb-0">
@@ -60,7 +60,7 @@
           
             <div class="member-entry" *ngFor="let review of reviewsFromMember" > 
                 <a href="#" class="member-img" style="width:10rem; height:10rem"> 
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                    <img [src]="getRestaurantImageUrl(review.restaurantId)" class="img-rounded" style="height:10rem"> 
                     <i class="fa fa-forward"></i> 
                 </a> 
         

@@ -2,6 +2,10 @@ body{margin-top:20px;
     background:#eee;
     }
     
+    .icheck {
+        margin-right:4px;
+    }
+
     .btn {
         margin-bottom: 5px;
     }

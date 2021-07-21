@@ -113,6 +113,15 @@ export class MemberListComponent
     return restaurantName;
   }
 
+  public getRestaurantImageUrl(restaurantId: number): string{
+    let restaurantImageUrl: string;
+    let targetRestaurant = this.restaurantService.restaurants.find( ({ id }) => id === restaurantId ) as Restaurant;
+  
+    restaurantImageUrl = targetRestaurant.imageUrl;
+  
+    return restaurantImageUrl;
+  }
+
 
   public setReviewsFromMember(member: Member): void {
     this.reviewsFromMember = [];   // First we clear result list of reviews

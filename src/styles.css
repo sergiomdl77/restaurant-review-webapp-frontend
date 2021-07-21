@@ -19,3 +19,13 @@
 .main-background {
     background-color: rgb(212, 199, 247);
 }
+
+body {
+    padding-top:56px;
+}
+
+  
+.sticky-top {
+    padding-top: 70px;
+}
+  

@@ -12,4 +12,5 @@ export interface Restaurant
     foodType: string;
     ambiance: string;
     priceLevel: number;
+    imageUrl: string;
 }

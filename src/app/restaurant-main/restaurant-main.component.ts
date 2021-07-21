@@ -133,18 +133,39 @@ export class RestaurantMainComponent
       this.restaurantService.restaurantSearchResults = [];
       for (let restaurant of cuisineFilterResults)
       {
-        if (restaurant.name.toLowerCase().indexOf(restName.toLowerCase()) !== -1)
+        if (restaurant.name.toLowerCase().indexOf(restName.toLowerCase()) == 0)
           this.restaurantService.restaurantSearchResults.push(restaurant);
       }
     }
   }
 
-  // This method gets the form (filterForm) and store the values of each filter in a variable, while 
-  // assigning a 0 or "" (accordingly) to the variable if filter was not selected. Then it lets the 
-  // entire list of restaurants go through a chain of filters (one by one).
+
+  public filterByZipCode(restZipCode: string): void{
+    let byNameFilterResults = this.restaurantService.restaurantSearchResults;
+    if (restZipCode != "")          // if there is at least one letter in filter by name (text input)
+    {
+      this.restaurantService.restaurantSearchResults = [];
+      for (let restaurant of byNameFilterResults)
+      {
+        if (restaurant.locZipCode.indexOf(restZipCode) == 0)
+          this.restaurantService.restaurantSearchResults.push(restaurant);
+      }
+    }
+
+
+  }
+
+
+
+  // This method gets the form (filterForm) and store the value of each filter in a variable (a value
+  // that is within the range of values stored in the database and that are meaningful to the 
+  // application's logic), while assigning a 0 or "" (accordingly) to the variable if such checkbox was 
+  // not selected. Then it lets the entire list of restaurants go through a chain of filters (one by one).
   public applyFilters(filters: NgForm): void{
     this.restaurantService.restaurantSearchResults = this.restaurantService.restaurants;
     // giving the value of 0 or "" to each filter that was not selected (to get no matches on search)
+    // and creating meaningful variables (with values other than just "true" of "false") to compare 
+    // against the attributes from the "restaurant" table on the Database.
     let low = (!filters.value.lowPriceOption)? 0: 1;
     let medium = (!filters.value.mediumPriceOption)? 0: 2;
     let high = (!filters.value.highPriceOption)? 0: 3;
@@ -163,9 +184,10 @@ export class RestaurantMainComponent
     let steakHouse = (!filters.value.steakHouseOption)? "": "Steak House";
     let seafood = (!filters.value.seafoodOption)? "": "Sea Food";
     let restName = (!filters.value.restName)? "": filters.value.restName;
+    let restZipCode = (!filters.value.restZipCode)? "": filters.value.restZipCode;
 
     // The next method calls make the filtering one filter at a time, while shortening/narrowing the 
-    // restaurantService.restaurantSearchResults from being the entire list of restaurants to a 
+    // restaurantService.restaurantSearchResults list from being the entire list of restaurants to a 
     // completely filtered list.  
 
     this.filterByPrice(low,medium,high);   // passing through filter by Price
@@ -177,6 +199,8 @@ export class RestaurantMainComponent
     this.filterByCuisine(italian,chinese,texMex,indian,steakHouse,seafood);  // passing through filter by Cuisine
 
     this.filterByname(restName);  // passing through filter by name
+
+    this.filterByZipCode(restZipCode); // passing through filter by ZipCode
   }
 
 

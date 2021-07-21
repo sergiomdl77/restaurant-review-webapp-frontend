@@ -2,7 +2,7 @@
 <div class="main-background" id="mainContainer" >
 
 
-  <nav class="navbar navbar-expand-lg navbar sticky-top navbar navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar fixed-top navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="#"> <span style="font-weight:bold">Restaurant Review App</span> </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -56,7 +56,7 @@
   </nav>
 
   <!-- Eather Restaurant Page or Member Listing Page (depending on route chosen by client)-->
-  <router-outlet (activate)="resetRestaurantResults()"></router-outlet>
+  <router-outlet (activate)="resetResults()"></router-outlet>
 
 </div>
 

@@ -77,6 +77,7 @@ export class AppComponent implements OnInit
     this.memberService.getAllMembers().subscribe(
       (response: Member[]) => {
         this.memberService.members = response;
+        this.memberService.memberSearchResults = response;
         this.addGuestUser();        // Adding mock user to use when nobody has logged in
         this.onLogout();            // Initializing the loggedInMember to "Guest User"
       },
@@ -104,9 +105,10 @@ export class AppComponent implements OnInit
   }
 
 
-  // Method that resets the restaurant Results to all display all currently persisted restaurants
-  public resetRestaurantResults(): void{
+  // Method that resets the restaurant Results to all currently persisted restaurants
+  public resetResults(): void{
     this.restaurantService.restaurantSearchResults = this.restaurantService.restaurants;
+    this.memberService.memberSearchResults = this.memberService.members;
   }
 
 

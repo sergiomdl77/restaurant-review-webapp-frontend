@@ -16,11 +16,18 @@
             
             <form #filtersForm="ngForm"  >
 
+                <!-- Searh Restaurant By Name -->
                 <div class="input-group">
                     <input type="text" ngModel class="form-control" name="restName" id="restName"
                        placeholder="Search restaurant by name..." (ngModelChange)="applyFilters(filtersForm)">
                 </div>
 
+                <!-- Searh Restaurant By Zip Code -->
+                <div class="input-group" style="margin-top:3%;">
+                  <input type="text" ngModel class="form-control" name="restZipCode" id="restZipCode"
+                      placeholder="Search Zip Code..." (ngModelChange)="applyFilters(filtersForm)">
+                </div>
+              
                 <!-- PRICE Filter -->
                 <h4 style="margin-top:12px">By Price:</h4>
                 <div class="checkbox">

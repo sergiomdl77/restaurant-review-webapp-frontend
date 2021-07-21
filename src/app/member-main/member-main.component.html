@@ -1,1 +1,29 @@
-<member-list></member-list>>
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar sticky-top"  > 
+    <div class="container px-4 px-lg-5"  >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="col-md-12" >
+                <form #filtersForm="ngForm"  >
+
+                    <div class="row justify-content-center" >
+
+                        <!-- Searh Members By Username -->
+                        <div class="col-md-4 input-group">
+                            <input type="text" ngModel class="form-control" name="memberId" id="memberId"
+                            placeholder="Search Members by Username..." (ngModelChange)="applyFilters(filtersForm)">
+                        </div>
+
+                        <!-- Searh Members By Zip Code -->
+                        <div class="col-md-4 input-group">
+                        <input type="text" ngModel class="form-control" name="memberZipCode" id="memberZipCode"
+                            placeholder="Search Members by Zip Code..." (ngModelChange)="applyFilters(filtersForm)">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<member-list></member-list>

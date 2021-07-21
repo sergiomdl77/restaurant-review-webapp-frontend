@@ -3,9 +3,9 @@
     <!-- Restaurant Entry -->
     <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurantSearchResults " > 
     
-        <div class="col-sm-3" style="width:11rem" >
-            <a href="#" class="member-img" style="width:10rem; height:10rem"> 
-                <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"  class="img-rounded" > 
+        <div class="col-sm-3" style="width:11rem;"  >
+            <a href="#" class="member-img" style="width:10rem; height:10rem; "> 
+                <img [src]="restaurant.imageUrl"  class="img-rounded" style="height:13rem; margin-top:9%;">
                 <i class="fa fa-forward"></i> 
             </a> 
         </div>

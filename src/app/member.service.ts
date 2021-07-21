@@ -16,6 +16,7 @@ export class MemberService
     private apiServerUrl = environment.apiBaseUrl;
     public loggedInMember: Member = {} as Member;
     public members: Member[] = [];
+    public memberSearchResults = [] as Member[];
 
     // Injecting the built in HttpClient to make http requests to backend
     constructor(private http: HttpClient) {}
