@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://restaurant-review-webapp-b-end.herokuapp.com'
+  apiBaseUrl: 'http://ec2-3-239-148-26.compute-1.amazonaws.com:8080'
 
 };

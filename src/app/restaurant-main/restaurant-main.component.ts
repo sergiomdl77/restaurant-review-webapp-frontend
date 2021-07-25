@@ -17,8 +17,6 @@ import { NgForm } from '@angular/forms';
 
 export class RestaurantMainComponent
 {
-  private restaurantSearchResults: Restaurant[] = []; 
-
   constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
 
 
