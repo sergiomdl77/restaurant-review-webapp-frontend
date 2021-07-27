@@ -9,6 +9,7 @@ import { RestaurantMainComponent } from './restaurant-main/restaurant-main.compo
 import { RestaurantListComponent } from './restaurant-list/restaurant-list.component';
 import { MemberListComponent } from './member-list/member-list.component';
 import { MemberMainComponent } from './member-main/member-main.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { MemberMainComponent } from './member-main/member-main.component';
     RestaurantMainComponent,
     RestaurantListComponent,
     MemberListComponent,
-    MemberMainComponent
+    MemberMainComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

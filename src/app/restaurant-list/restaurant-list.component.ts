@@ -1,3 +1,4 @@
+import { AppComponent } from './../app.component';
 import { Component, OnInit } from '@angular/core';
 import { RestaurantService } from '../restaurant.service';
 import { Restaurant } from '../restaurant';
@@ -21,7 +22,10 @@ export class RestaurantListComponent
   public restaurantOfInterest: Restaurant = {} as Restaurant;    
   public memberOnReview = {} as Member;
 
-  constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
+  constructor(public restaurantService: RestaurantService, 
+              public reviewService: ReviewService, 
+              public memberService: MemberService,
+              public appComponent: AppComponent){}
 
 
   // Method used to create an array that will simple assist *ngFor as a counter to display an icon 

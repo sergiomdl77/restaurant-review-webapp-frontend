@@ -173,7 +173,16 @@
           <div class="modal-body">
               <h6>As a Guest User you are not allowed to add reviews. </h6> 
               <h6>We would love to know your opinion on restaurants.</h6> 
-              <h6>SIGN UP to become a member and let's hear about your dining experiences.</h6> 
+              <div>
+                  <span style="display: inline-block;">
+                    <button class="btn btn-primary btn-info btn-sm" style="margin-bottom: 12px; margin-top:6px; margin-right:15px; color:white" 
+                        (click)="this.appComponent.onOpenModal('signUp')">Sign Up
+                    </button>
+                  </span > 
+                  <span style="display: inline-block;">
+                    <h6 >to become a member.</h6> 
+                  </span>
+               </div>
           </div>
           <div class="modal-footer">
               <div class="col-md-1accordion2">

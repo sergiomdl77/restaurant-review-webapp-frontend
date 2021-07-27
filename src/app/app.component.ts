@@ -179,7 +179,7 @@ export class AppComponent implements OnInit
     let pass = loginForm.value.password as string;
     const closeButton = document.getElementById('loginCloseButton');
 
-    let targetUser = this.memberService.members.find( ({ id}) => (id === user) ) as Member;
+    let targetUser = this.memberService.members.find( ({id}) => (id === user) ) as Member;
 
     if (targetUser)
     {
