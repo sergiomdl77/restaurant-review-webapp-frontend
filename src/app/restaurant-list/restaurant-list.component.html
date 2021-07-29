@@ -4,7 +4,8 @@
     <div class="member-entry"  *ngFor="let restaurant of restaurantService.restaurantSearchResults " > 
     
         <div class="col-sm-3" style="width:11rem;"  >
-            <a href="#" class="member-img" style="width:10rem; height:10rem; "> 
+            <a href="#" (click)="setRestaurantOfInterest(restaurant)" class="member-img" style="width:10rem; height:10rem; " 
+                data-toggle='modal' data-target="#restaurantProfileModal"> 
                 <img [src]="restaurant.imageUrl"  class="img-rounded" style="height:13rem; margin-top:9%;">
                 <i class="fa fa-forward"></i> 
             </a> 
@@ -12,7 +13,11 @@
         <div class="search-result-item-body" style="padding-left:20px">
             <div class="row">
                 <div class="col-sm-9" style="max-width: 275px;">
-                    <h4 class="search-result-item-heading" style="font-weight: bold"><a href="#"> {{restaurant.name}} </a></h4>
+                    <h4 class="search-result-item-heading" style="font-weight: bold"> 
+                        <a href="#" (click)="setRestaurantOfInterest(restaurant)"  data-toggle='modal' data-target="#restaurantProfileModal">
+                            {{restaurant.name}} 
+                        </a>
+                    </h4>
                     <p class="info"> {{restaurant.locCity}}, {{restaurant.locState}} {{restaurant.locZipCode}} </p>
                     <p class="info"> Cuisine: {{restaurant.foodType}} </p>
                     <p class="info"> Ambiance: {{restaurant.ambiance}} </p>
@@ -35,7 +40,6 @@
                         <span  *ngFor="let grayStar of countArray( 5 - getAvgScore(restaurant.id))"  style="margin:2px" >
                             <img src="/assets/img/star-fill-shade.svg">
                         </span>
-
                     </p>
                     <p style="margin-top:15px">
                         <a (click)="onOpenModal(restaurant, 'reviewList')" class="btn btn-primary btn-info btn-sm" style="color:white;" >Reviews</a>
@@ -51,7 +55,7 @@
 </div>
 
 <!-- Modal to List all reviews for one specific restaurant -->
-<div class="modal fade" id="reviewsOnRestaurantModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="reviewsOnRestaurantOfInterestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -60,17 +64,35 @@
             <span aria-hidden="true">&times;</span>
         </div>
         <div class="modal-body" style=" background-color: darkgray;">
-          
-            <div class="member-entry" *ngFor="let review of reviewsOnRestaurant" > 
-                <a href="#" class="member-img" style="width:10rem; height:10rem"> 
+            <div *ngIf="!reviewsOnRestaurantOfInterest.length">
+                <p style="color: black">This restaurant has not been reviewed by any member yet.</p>
+            </div>
+            <div class="member-entry" *ngFor="let review of reviewsOnRestaurantOfInterest" > 
+                <a href="#" (click)="setMemberOfInterest(review.memberId)" class="member-img" style="width:10rem; height:10rem"
+                    data-toggle="modal" data-target="#memberProfileModal"> 
                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded" > 
-                    <i class="fa fa-forward"></i> 
+                    <i class="fa fa-forward"></i>
+
+                    <!-- <div class="col-6" *ngIf="getMember(review.memberId).gender == 'Female'">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="" class="img-fluid rounded-circle w-60">
+                    </div>
+                    <div class="col-6" *ngIf="getMember(review.memberId).gender == 'Male'">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="img-fluid rounded-circle w-60">
+                    </div>
+                    <div class="col-6" *ngIf="getMember(review.memberId).gender == 'Other'">
+                        <img src="/assets/img/anonymous_user_grey.png" width="350" alt="" class="img-fluid rounded-circle w-60">
+                    </div> -->
+
                 </a> 
         
                 <div class="search-result-item-body">
                     <div class="row">
                         <div class="col-sm-9">
-                            <h4 class="search-result-item-heading"><a href="#"> {{review.memberId}} </a></h4>
+                            <h4 class="search-result-item-heading">
+                                <a href="#" (click)="setMemberOfInterest(review.memberId)" data-toggle='modal' data-target="#memberProfileModal">
+                                    {{review.memberId}} 
+                                </a>
+                            </h4>
                             <p class="info"> {{ getMemberLocation(review.memberId) }} </p>
                             <p class="info"> Posted on: {{ review.rvDate | slice:0:24 }} </p>
                             <p class="info"> "{{ review.comment }}" </p>
@@ -92,6 +114,7 @@
     </div>
 </div>
     
+
 <!-- Add review (Modal) for a specific restaurant  -->
 <div id="addReviewModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
@@ -174,22 +197,124 @@
               <h6>As a Guest User you are not allowed to add reviews. </h6> 
               <h6>We would love to know your opinion on restaurants.</h6> 
               <div>
+                <span style="display: inline-block;">
+                  <button class="btn btn-primary btn-info btn-sm" style="margin-bottom: 12px; margin-top:6px; margin-right:15px; color:white" 
+                      (click)="this.appComponent.onOpenModal('logIn')">Log In
+                  </button>
+                </span > 
+                <span style="display: inline-block;">
+                  <h6 >if you are an Active Member</h6> 
+                </span>
+             </div>
+
+              <div>
                   <span style="display: inline-block;">
                     <button class="btn btn-primary btn-info btn-sm" style="margin-bottom: 12px; margin-top:6px; margin-right:15px; color:white" 
                         (click)="this.appComponent.onOpenModal('signUp')">Sign Up
                     </button>
                   </span > 
                   <span style="display: inline-block;">
-                    <h6 >to become a member.</h6> 
+                    <h6 >to become a Member and share experiences.</h6> 
                   </span>
                </div>
           </div>
           <div class="modal-footer">
               <div class="col-md-1accordion2">
-              <button class="btn btn-primary btn-info btn-md" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>            
               </div>	
           </div>
       </div>
     </div>
-  </div>
+</div>
   
+
+<!-- Member Profile Modal  -->
+<div id="memberProfileModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+              <h1 class="text-center">{{ memberOfInterest.id }}</h1>
+              <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+
+            <div class="modal-body">
+
+
+                <div class="card m-b-30" style="width: 25rem; margin:2rem;" >
+                    <div class="card-body row">
+                        <div class="col-6" *ngIf="memberOfInterest.gender == 'Female'">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="" class="img-fluid rounded-circle w-60">
+                        </div>
+                        <div class="col-6" *ngIf="memberOfInterest.gender == 'Male'">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="img-fluid rounded-circle w-60">
+                        </div>
+                        <div class="col-6" *ngIf="memberOfInterest.gender == 'Other'">
+                            <img src="/assets/img/anonymous_user_grey.png" width="350" alt="" class="img-fluid rounded-circle w-60">
+                        </div>
+
+                        <div class="col-6 card-title align-self-center mb-0">
+                            <h5 style="font-weight: bold;"> {{ memberOfInterest.id }}</h5>
+                            <p class="m-0" style="color:rgb(131, 126, 126)"> {{ getMemberLocation( memberOfInterest.id ) }}</p>
+                        </div>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Gender : {{ memberOfInterest.gender }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#"> {{ memberOfInterest.email }}</a></li>
+                        <li class="list-group-item"><i class="bi bi-calendar-check float-right"></i>Birthdate : {{ getShortBirthdate( memberOfInterest.id ) }}</li>
+                        <li class="list-group-item">Reviews posted : {{ getReviewsFromMemberOfInterestCount() }} </li> 
+                    </ul> 
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Restaurant Profile Modal  -->
+<div id="restaurantProfileModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+              <h1 class="text-center">{{ restaurantOfInterest.name }}</h1>
+              <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <img [src]="restaurantOfInterest.imageUrl" alt="" class="img-fluid  w-60">
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <p class="info" style="font-weight: bold;"> 
+                            {{restaurantOfInterest.locCity}}, {{restaurantOfInterest.locState}} {{restaurantOfInterest.locZipCode}}
+                        </p>
+                        <p>
+                            <span>Phone Number: </span>
+                            <!-- <span> {{ restaurantOfInterest.phone }} </span> -->
+                        </p>
+                        <p class="info"> Cuisine: {{restaurantOfInterest.foodType}} </p>
+                        <p class="info"> Ambiance: {{restaurantOfInterest.ambiance}} </p>
+
+                    </div>
+                </div>
+                <div style="padding-left: 3rem;">
+                    <p> Desription:</p>
+                    <!-- <p> {{ restaurantOfInterest.description }}</p> -->
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

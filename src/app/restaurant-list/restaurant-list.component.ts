@@ -18,14 +18,96 @@ import { NgForm } from '@angular/forms';
 // export class RestaurantListComponent implements OnInit 
 export class RestaurantListComponent 
 {
-  public reviewsOnRestaurant: Review[] = [];
-  public restaurantOfInterest: Restaurant = {} as Restaurant;    
-  public memberOnReview = {} as Member;
+  public restaurantOfInterest: Restaurant = {} as Restaurant; 
+  public reviewsFromMemberOfInterest: Review[] = [];
+  // public reviewsOnRestaurantOfInterest: Review[] = [
+  //   { rvId: 0,
+  //     restaurantId: 0,
+  //     memberId: "",
+  //     rvDate: "",
+  //     comment: "",
+  //     score: 0
+  //   }
+  // ];
+  public reviewsOnRestaurantOfInterest: Review[] = [];
+  public memberOfInterest: Member = {
+    id : "Guest",
+    password : "Guest",
+    firstName : "Guest",
+    lastName : "Guest",
+    birthDate : "Guest",
+    locCity : "Guest",
+    locState : "Guest",
+    locZipCode : "Guest",
+    gender : "Guest",
+    email : "Guest"
+   };
 
   constructor(public restaurantService: RestaurantService, 
               public reviewService: ReviewService, 
               public memberService: MemberService,
               public appComponent: AppComponent){}
+
+    
+  public setMemberOfInterest(memberId:string): void{
+    this.memberService.getMember(memberId).subscribe(
+      (response: Member) => { 
+        this.memberOfInterest = response;
+        this.setReviewsFromMemberOfInterest();
+      },
+      (error: HttpErrorResponse) => { alert(error.message); }
+    );
+  }
+
+
+  public setRestaurantOfInterest(restaurant: Restaurant): void {
+    this.restaurantOfInterest = restaurant;
+  }
+  
+
+  public getReviewsFromMemberOfInterestCount(): number {
+    return this.reviewsFromMemberOfInterest.length;
+  }
+
+  public setReviewsFromMemberOfInterest(): void {
+    this.reviewsFromMemberOfInterest = [];   // First we clear result list of reviews
+
+    for (let review of this.reviewService.reviews)   // And now we form the list of reviews with restaurantId provided
+    { 
+      if (review.memberId === this.memberOfInterest.id)
+        this.reviewsFromMemberOfInterest.push(review);
+    }
+  }
+
+
+  public getMember(memberId: string): Member {
+    return this.memberService.members.find( ({ id }) => { memberId === id}) as Member;
+  }
+
+
+  public getMemberLocation(memberId: string): string{
+    let location: string;
+    let targetMember = this.memberService.members.find( ({ id }) => id === memberId ) as Member;
+  
+    location = `${targetMember.locCity}, ${targetMember.locState} ${targetMember.locZipCode}`;
+  
+    return location;
+  }
+  
+
+  public getShortBirthdate(memberId: string): string{
+    let shortDate: string = "";
+    let targetMember: Member = this.memberService.members.find( ({ id }) => id === memberId ) as Member;
+  
+    shortDate = targetMember.birthDate;
+    // shortDate = member.birthDate.slice(0,14);
+    if (shortDate[14] == ',')
+      shortDate = shortDate.slice(0,14);
+    else
+      shortDate = shortDate.slice(0,15);
+
+    return shortDate;
+  }
 
 
   // Method used to create an array that will simple assist *ngFor as a counter to display an icon 
@@ -78,16 +160,6 @@ export class RestaurantListComponent
   }
 
 
-public getMemberLocation(memberId: string): string{
-  let location: string;
-  let targetMember = this.memberService.members.find( ({ id }) => id === memberId ) as Member;
-
-  location = `${targetMember.locCity}, ${targetMember.locState} ${targetMember.locZipCode}`;
-
-  return location;
-}
-
-
 public getAvgScore(restaurantId: number): number{
   let scoreSum = 0;
   let count = 0;
@@ -109,13 +181,13 @@ public getAvgScore(restaurantId: number): number{
   // are currently persisted on the database and match the restaurantId provided.  This
   // method should be called every time we need to display a list of reviews for a specific
   // restaurant
-  public setReviewsOnRestaurant(restaurant: Restaurant): void {
-    this.reviewsOnRestaurant = [];   // First we clear result list of reviews
+  public setReviewsOnRestaurantOfInterest(restaurant: Restaurant): void {
+    this.reviewsOnRestaurantOfInterest = [];   // First we clear result list of reviews
     this.restaurantOfInterest = restaurant;
 
     for (let review of this.reviewService.reviews)   // And now we form the list of reviews with restaurantId provided
       if (review.restaurantId === restaurant.id)
-        this.reviewsOnRestaurant.push(review);
+        this.reviewsOnRestaurantOfInterest.push(review);
   }
 
 
@@ -157,10 +229,10 @@ public getAvgScore(restaurantId: number): number{
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'reviewList') {
-      this.setReviewsOnRestaurant(restaurant); // re-sets the reviewsByRestaurant
+      this.setReviewsOnRestaurantOfInterest(restaurant); // re-sets the reviewsByRestaurant
                                                // and sets restaurantOfInterest to a value
                                                // that refers to the restaurant that has the reviews
-      button.setAttribute('data-target', '#reviewsOnRestaurantModal');
+      button.setAttribute('data-target', '#reviewsOnRestaurantOfInterestModal');
     }
     if (mode === 'addReview') {
       if (this.memberService.loggedInMember.id != "Guest")
@@ -175,4 +247,5 @@ public getAvgScore(restaurantId: number): number{
     container?.appendChild(button);    // added "?" because container could be null and this code is on "strict mode"
     button.click();
   }
+
 }

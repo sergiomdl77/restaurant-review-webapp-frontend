@@ -12,13 +12,13 @@
                *ngIf="member.id != memberService.loggedInMember.id && member.id != 'Guest'">
                 <div class="card-body row">
                     <div class="col-6" *ngIf="member.gender == 'Female'">
-                        <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="" class="img-fluid rounded-circle w-60"></a>
+                        <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="" class="img-fluid rounded-circle w-60">
                     </div>
                     <div class="col-6" *ngIf="member.gender == 'Male'">
-                        <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="img-fluid rounded-circle w-60"></a>
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="img-fluid rounded-circle w-60">
                     </div>
                     <div class="col-6" *ngIf="member.gender == 'Other'">
-                        <a  href=""><img src="/assets/img/anonymous_user_grey.png" width="350" alt="" class="img-fluid rounded-circle w-60"></a>
+                        <img src="/assets/img/anonymous_user_grey.png" width="350" alt="" class="img-fluid rounded-circle w-60">
                     </div>
 
                     <div class="col-6 card-title align-self-center mb-0">
@@ -34,7 +34,7 @@
                 </ul>
                 <div class="card-body">
                     <div class="float-right btn-group btn-group-sm">
-                          <a (click)="onOpenModal(member, 'reviewList')" class="btn btn-primary btn-info btn-sm" style="color:white;">Watch User's Reviews</a>
+                          <a (click)="onOpenModal(member, 'reviewList')" class="btn btn-primary btn-info btn-sm" style="color:white;">Watch Member's Posts</a>
                     </div>
                 </div>
             </div>
@@ -50,41 +50,102 @@
 <div class="modal fade" id="reviewsFromMemberModal" tabindex="-1" aria-labelledby="reviewsFromMemberLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
+
         <div class="modal-header">
-          <h4 class="modal-title" id="reviewsFromMemberLabel" style="font-weight:bold; color:teal"> {{ memberOfInterest.id }} Reviews</h4>
-          <!-- <p>  ( {{ getReviewsFromMemberCount(memberOfInterest) }} posts )</p> -->
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          <h4 class="modal-title" id="reviewsFromMemberLabel" style="font-weight:bold; color:teal"> {{ memberOfInterest.id }}'s Posts</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
             <span aria-hidden="true">&times;</span>
         </div>
-        <div class="modal-body" style=" background-color: darkgray;">
-          
-            <div class="member-entry" *ngFor="let review of reviewsFromMember" > 
-                <a href="#" class="member-img" style="width:10rem; height:10rem"> 
-                    <img [src]="getRestaurantImageUrl(review.restaurantId)" class="img-rounded" style="height:10rem"> 
-                    <i class="fa fa-forward"></i> 
-                </a> 
-        
-                <div class="search-result-item-body">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <h4 class="search-result-item-heading" > Restaurant: {{ getRestaurantName(review.restaurantId) }} </h4>
-                            <h5 class="search-result-item-heading" > Location: {{ getRestaurantLocation(review.restaurantId) }} </h5>
-                            <h5 class="search-result-item-heading" style="margin-top:5px" > Posted on: {{ review.rvDate | slice:0:24 }} </h5>
-                            <p class="info" style="margin-top:5px"> "{{review.comment}}" </p>
-                            <p>
-                                <span style="margin:2px" *ngFor="let star of countArray(review.score)">
-                                    <img src="/assets/img/star-fill.svg">
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>    
-            </div>
 
+        <div class="modal-body" style=" background-color: darkgray;">
+            <div *ngIf="reviewsFromMember.length === 0">
+                <p>This member has not posted any reviews yet.</p>
+            </div>
+            <div *ngIf="reviewsFromMember.length > 0">
+                <div class="member-entry" *ngFor="let review of reviewsFromMember" > 
+                    <a href="#" (click)="setRestaurantOfInterest(review.restaurantId)" data-toggle="modal" data-target="#restaurantProfileModal"
+                        class="member-img" style="width:10rem; height:10rem"> 
+                        <img [src]="getRestaurantImageUrl(review.restaurantId)" class="img-rounded" style="height:10rem"> 
+                        <i class="fa fa-forward"></i> 
+                    </a> 
+            
+                    <div class="search-result-item-body">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <p>
+                                    <span>
+                                        <h4 class="search-result-item-heading" >  
+                                            Reviewed Restaurant:
+                                        </h4>
+                                    </span>
+                                    <span>
+                                        <h4 class="search-result-item-heading" >  
+                                            <a href="#" (click)="setRestaurantOfInterest(review.restaurantId)" 
+                                                data-toggle="modal" data-target="#restaurantProfileModal">
+                                                {{ getRestaurantName(review.restaurantId) }} 
+                                            </a>
+                                        </h4>
+                                    </span>
+                                </p>
+                                <h5 class="search-result-item-heading" > Location: {{ getRestaurantLocation(review.restaurantId) }} </h5>
+                                <h5 class="search-result-item-heading" style="margin-top:5px" > Posted on: {{ review.rvDate | slice:0:24 }} </h5>
+                                <p class="info" style="margin-top:5px"> "{{review.comment}}" </p>
+                                <p>
+                                    <span style="margin:2px" *ngFor="let star of countArray(review.score)">
+                                        <img src="/assets/img/star-fill.svg">
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
         </div>
+
         <div class="modal-footer">
             <button type="button" id="add-employee-form" class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
         </div>
       </div>
+    </div>
+</div>
+
+<!-- Restaurant Profile Modal  -->
+<div id="restaurantProfileModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+              <h1 class="text-center">{{ restaurantOfInterest.name }}</h1>
+              <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <img [src]="restaurantOfInterest.imageUrl" alt="" class="img-fluid  w-60">
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <p class="info" style="font-weight: bold;"> 
+                            {{restaurantOfInterest.locCity}}, {{restaurantOfInterest.locState}} {{restaurantOfInterest.locZipCode}}
+                        </p>
+                        <p>
+                            <span>Phone Number: </span>
+                            <!-- <span> {{ restaurantOfInterest.phone }} </span> -->
+                        </p>
+                        <p class="info"> Cuisine: {{restaurantOfInterest.foodType}} </p>
+                        <p class="info"> Ambiance: {{restaurantOfInterest.ambiance}} </p>
+
+                    </div>
+                </div>
+                <div style="padding-left: 3rem;">
+                    <p> Desription:</p>
+                    <!-- <p> {{ restaurantOfInterest.description }}</p> -->
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>

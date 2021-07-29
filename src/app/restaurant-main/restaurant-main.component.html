@@ -170,13 +170,6 @@
           <div class="col-lg-9">
             <h2 style="text-align: center; margin: 2rem" >Restaurants to Review</h2> 
             <hr>
-            <!-- SEARCH Input -->
-            <!-- <div class="input-group">
-              <input type="text" class="form-control" value="web development">
-              <span class="input-group-btn">
-                <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
-              </span>
-            </div> -->
 
             <!-- RESULTS Page -->
             <p>Showing all results</p>
@@ -185,19 +178,17 @@
             
             <div class="row">
               <!-- BEGIN ORDER RESULT -->
-              <!-- <div class="col-sm-6">
+              <div class="col-sm-6">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  <button type="button" class="btn btn-default dropdown-toggle" id="orderByDropdown" data-toggle="dropdown">
                     Order by <span class="caret"></span>
                   </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li class="btn">Name</li>
-                    <li class="btn">Date</li>
-                    <li class="btn">View</li>
-                    <li class="btn">Rating</li>
-                  </ul>
+                  <div class="dropdown-menu" aria-labelledby="orderByDropdown">
+                    <button class="dropdown-item" (click)="orderRestaurantResultsByName">Name</button>
+                    <button class="dropdown-item" (click)="orderRestaurantResultsByRating">Rating</button>
+                  </div>
                 </div>
-              </div> -->
+              </div>
               <!-- END ORDER RESULT -->
               
             </div>

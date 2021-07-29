@@ -20,27 +20,33 @@
 
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <button class="btn btn-primary btn-info btn-sm" style="margin-bottom: 12px; margin-top:6px; margin-right:15px; color:white" 
+          <button class="btn btn-primary btn-info btn-sm" style="margin-bottom: 12px; margin-top:10px; margin-right:15px; color:white" 
               [disabled]="memberService.loggedInMember.id != 'Guest'" (click)="onOpenModal('signUp')">Sign Up
           </button>
         </li>
         <li class="nav-item active">
-          <button class="btn btn-outline-info btn-sm" style="margin-bottom: 8px; margin-top:6px; margin-right:15px; color:teal; font-weight: bold"  
-              [disabled]="memberService.loggedInMember.id != 'Guest'" (click)="onOpenModal('logIn')">Log In
+          <button class="btn btn-outline-info btn-sm" style="margin-bottom: 8px; margin-top:10px; margin-right:15px; color:teal; font-weight: bold"  
+              [disabled]="memberService.loggedInMember.id != 'Guest'" >Log In
           </button>  
         </li>
 
+
         <li class="nav-item dropdown">
-          <div class="d-flex" id="userDropdownDiv" style="color:white; align-items: center; font-weight:bold;"> 
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span *ngIf=" memberService.loggedInMember.id != 'Guest'; else guestUser" style="margin-right: 5px">  {{memberService.loggedInMember.id}} </span>
-              <ng-template #guestUser>
-                <span style="margin-right: 5px">  Guest User </span> 
-              </ng-template>
-            </a>
-  
-            <span> <h3> <i class="bi bi-person-circle"></i> </h3> </span>
+          <div class="d-flex" id="userDropdownDiv" style="color:white; align-items: center; font-weight:bold;">
+
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:transparent;">              
+              <span *ngIf=" memberService.loggedInMember.id != 'Guest'" 
+                style="margin-right: 5px; display: inline-block;">  {{memberService.loggedInMember.id}} 
+              </span>
+              <span *ngIf=" memberService.loggedInMember.id == 'Guest'" 
+                style="margin-right: 5px; display: inline-block">  Guest User 
+              </span> 
+              <span style="display: inline-block;"> <h4> <i class="bi bi-person-circle"></i> </h4> </span>
+            </button>
+
             <div class="dropdown-menu" aria-labelledby="userDropdown">
+              <button *ngIf="memberService.loggedInMember.id == 'Guest'"      class="dropdown-item" (click)="onOpenModal('logIn')"
+                style="font-size: small"> Log In for Actions</button>
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myProfile')">My Profile</button>
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('editProfile')">Edit Profile</button>
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myReviews')">My Reviews</button>
@@ -50,6 +56,8 @@
 
           </div>
         </li>
+
+
       </ul>
 
     </div>
@@ -169,8 +177,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <div class="col-md-1accordion2">
-            <button id="loginCloseButton" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          <div class="col-md-1accordion2">
+            <button id="loginCloseButton" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Cancel</button>
           </div>	
         </div>
     </div>

@@ -16,8 +16,33 @@ export class MemberListComponent
 {
   public reviewsFromMember: Review[] = [];
   public memberOfInterest: Member = {} as Member;
+  public restaurantOfInterest: Restaurant = {
+    id: 0,
+    name: "",
+    locCity: "",
+    locState: "",
+    locZipCode: "",
+    avgScore: 0,
+    reviewCount: 0,
+    foodType: "",
+    ambiance: "",
+    priceLevel: 0,
+    imageUrl: ""
+  }
 
   constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
+
+
+  public setRestaurantOfInterest(restaurantId:number): void{
+    this.restaurantService.getRestaurant(restaurantId).subscribe(
+      (response: Restaurant) => { 
+        this.restaurantOfInterest = response;
+      },
+      (error: HttpErrorResponse) => { alert(error.message); }
+    );
+  }
+
+
 
   // Method used to create an array that will simple assist *ngFor as a counter to display an icon 
   // a number of times (reps times)

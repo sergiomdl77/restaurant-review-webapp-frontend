@@ -45,6 +45,16 @@ export class RestaurantMainComponent
   }
   
 
+  public orderRestaurantResultsByName(): void{
+
+  }
+
+
+  public orderRestaurantResultsByRating(): void{
+
+  }
+
+  
   // If there was at least one Price filter selected, this method will modify the list of restaurant search results
   // (which is a property of the restaurantService to be available to several components) to then be inspected by
   // the next filter.
