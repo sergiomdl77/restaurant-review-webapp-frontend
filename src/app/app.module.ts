@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common'; 
+
 import { AppComponent } from './app.component';
 import { RestaurantMainComponent } from './restaurant-main/restaurant-main.component';
 import { RestaurantListComponent } from './restaurant-list/restaurant-list.component';
@@ -26,7 +27,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

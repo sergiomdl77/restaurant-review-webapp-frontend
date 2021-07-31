@@ -48,6 +48,7 @@ export class RestaurantListComponent
               public memberService: MemberService,
               public appComponent: AppComponent){}
 
+
     
   public setMemberOfInterest(memberId:string): void{
     this.memberService.getMember(memberId).subscribe(

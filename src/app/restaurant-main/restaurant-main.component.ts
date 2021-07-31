@@ -27,6 +27,21 @@ export class RestaurantMainComponent
   }
 
 
+  public orderRestaurantResultsByName(): void {
+    this.restaurantService.restaurantSearchResults.sort( 
+      (a: Restaurant, b: Restaurant) => ((a.name < b.name) ? -1 : ((a.name == b.name) ? 0 : 1))
+    );
+  }
+
+  public orderRestaurantResultsByRating(): void{
+    this.restaurantService.restaurantSearchResults.sort( 
+      (a: Restaurant, b: Restaurant) => ((a.priceLevel < b.priceLevel) ? -1 : ((a.priceLevel == b.priceLevel) ? 0 : 1))
+    );
+  }
+
+
+
+
   public getRating(restaurantId: number): number{
     let scoreSum = 0;
     let count = 0;
@@ -44,16 +59,6 @@ export class RestaurantMainComponent
       return (Math.floor(scoreSum/count));
   }
   
-
-  public orderRestaurantResultsByName(): void{
-
-  }
-
-
-  public orderRestaurantResultsByRating(): void{
-
-  }
-
   
   // If there was at least one Price filter selected, this method will modify the list of restaurant search results
   // (which is a property of the restaurantService to be available to several components) to then be inspected by
