@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HostListener } from '@angular/core';
+
 import { RestaurantService } from './restaurant.service';
 import { MemberService } from './member.service';
 import { ReviewService } from './review.service';
@@ -7,7 +9,7 @@ import { Member } from './member';
 import { Review } from './review';
 import { NgForm, NgModel } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { $ } from 'protractor';
+
 
 @Component({
   selector: 'app-root',
@@ -21,13 +23,53 @@ export class AppComponent implements OnInit
   public acceptedPassword = true;
   public reviewToDelete = {} as Review;
 
+  private guestUser: Member = {
+    id : "Guest",
+    password : "Guest",
+    firstName : "Guest",
+    lastName : "Guest",
+    birthDate : "Guest",
+    locCity : "Guest",
+    locState : "Guest",
+    locZipCode : "Guest",
+    gender : "Guest",
+    email : "Guest"
+   } 
+   private emptyReview: Review = 
+   { rvId: 0,
+     restaurantId: 0,
+     memberId: "empty",
+     rvDate: "empty",
+     comment: "empty",
+     score: 0
+   };
+
+
+  
   constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
+
+  @HostListener("window:beforeunload", ["$event"]) 
+  unloadHandler(event: Event) {
+    localStorage.setItem('loggedInMemberFromLocalStorage', this.memberService.loggedInMember.id);
+  }
+
 
   ngOnInit() {
     this.getRestaurants();
     this.getReviews();
     this.getMembersForInit();
   }
+
+
+  public loadUserInSession(): void {
+    let loggedInMemberFromLocalStorage = window.localStorage.getItem("loggedInMemberFromLocalStorage");
+
+    if (!loggedInMemberFromLocalStorage || loggedInMemberFromLocalStorage === "Guest")
+      this.memberService.loggedInMember = this.guestUser;
+    else
+      this.memberService.loggedInMember = this.memberService.members.find( ({ id }) => id === loggedInMemberFromLocalStorage ) as Member;
+  }
+
 
   public getRestaurants(): void {
     this.restaurantService.getAllRestaurants().subscribe(
@@ -48,6 +90,7 @@ export class AppComponent implements OnInit
     this.reviewService.getAllReviews().subscribe(
       (response: Review[]) => {
         this.reviewService.reviews = response;
+        this.reviewService.reviews.push(this.emptyReview);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -78,8 +121,11 @@ export class AppComponent implements OnInit
       (response: Member[]) => {
         this.memberService.members = response;
         this.memberService.memberSearchResults = response;
+        
         this.addGuestUser();        // Adding mock user to use when nobody has logged in
-        this.onLogout();            // Initializing the loggedInMember to "Guest User"
+
+        this.loadUserInSession();   // Retrieving the last user logged in before refreshing/reloading
+                                    // the webapp with browser's refresh button
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -87,22 +133,17 @@ export class AppComponent implements OnInit
     );
   }
 
-  private addGuestUser(): void {
-    let guest: Member = {
-      id : "Guest",
-      password : "Guest",
-      firstName : "Guest",
-      lastName : "Guest",
-      birthDate : "Guest",
-      locCity : "Guest",
-      locState : "Guest",
-      locZipCode : "Guest",
-      gender : "Guest",
-      email : "Guest"
-     } 
 
-     this.memberService.members.push(guest);
+
+  private addGuestUser(): void {
+    this.memberService.members.push(this.guestUser);
   }
+
+
+  public deleteGuestUser(): void {
+    this.memberService.members.splice( this.memberService.members.indexOf(this.guestUser)  , 1);
+  }
+  
 
 
   // Method that resets the restaurant Results to all currently persisted restaurants
@@ -341,10 +382,15 @@ export class AppComponent implements OnInit
 
   }
 
+/*
   public onLogout(): void{
     this.memberService.loggedInMember = this.memberService.members.find( ({ id }) => id === "Guest" ) as Member;
   }
+*/
 
+  public onLogout(): void{
+    this.memberService.loggedInMember = this.guestUser;
+  }
 
   public onOpenModal(mode: string): void {
     const container = document.getElementById('mainContainer');

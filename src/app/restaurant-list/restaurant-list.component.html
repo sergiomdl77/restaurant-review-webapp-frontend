@@ -63,6 +63,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             <span aria-hidden="true">&times;</span>
         </div>
+
         <div class="modal-body" style=" background-color: darkgray;">
             <div *ngIf="!reviewsOnRestaurantOfInterest.length">
                 <p style="color: black">This restaurant has not been reviewed by any member yet.</p>
@@ -70,18 +71,16 @@
             <div class="member-entry" *ngFor="let review of reviewsOnRestaurantOfInterest" > 
                 <a href="#" (click)="setMemberOfInterest(review.memberId)" class="member-img" style="width:10rem; height:10rem"
                     data-toggle="modal" data-target="#memberProfileModal"> 
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded" > 
-                    <i class="fa fa-forward"></i>
 
-                    <!-- <div class="col-6" *ngIf="getMember(review.memberId).gender == 'Female'">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="" class="img-fluid rounded-circle w-60">
+                    <div  *ngIf="getMemberGender(review.memberId) === 'Female'" >
+                        <img src="https://bootdey.com/img/Content/avatar/avatar8.png" >
                     </div>
-                    <div class="col-6" *ngIf="getMember(review.memberId).gender == 'Male'">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="img-fluid rounded-circle w-60">
+                    <div  *ngIf="getMemberGender(review.memberId) === 'Male'" >
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" >
                     </div>
-                    <div class="col-6" *ngIf="getMember(review.memberId).gender == 'Other'">
-                        <img src="/assets/img/anonymous_user_grey.png" width="350" alt="" class="img-fluid rounded-circle w-60">
-                    </div> -->
+                    <div  *ngIf="getMemberGender(review.memberId) === 'Other'">
+                        <img src="/assets/img/anonymous_user_grey.png"   width="150%" alt="" >
+                    </div>
 
                 </a> 
         
@@ -105,8 +104,8 @@
                     </div>
                 </div>    
             </div>
-
         </div>
+
         <div class="modal-footer">
             <button type="button" id="add-employee-form" class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
         </div>

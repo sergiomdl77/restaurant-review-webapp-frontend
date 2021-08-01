@@ -20,15 +20,6 @@ export class RestaurantListComponent
 {
   public restaurantOfInterest: Restaurant = {} as Restaurant; 
   public reviewsFromMemberOfInterest: Review[] = [];
-  // public reviewsOnRestaurantOfInterest: Review[] = [
-  //   { rvId: 0,
-  //     restaurantId: 0,
-  //     memberId: "",
-  //     rvDate: "",
-  //     comment: "",
-  //     score: 0
-  //   }
-  // ];
   public reviewsOnRestaurantOfInterest: Review[] = [];
   public memberOfInterest: Member = {
     id : "Guest",
@@ -49,7 +40,7 @@ export class RestaurantListComponent
               public appComponent: AppComponent){}
 
 
-    
+
   public setMemberOfInterest(memberId:string): void{
     this.memberService.getMember(memberId).subscribe(
       (response: Member) => { 
@@ -81,8 +72,11 @@ export class RestaurantListComponent
   }
 
 
-  public getMember(memberId: string): Member {
-    return this.memberService.members.find( ({ id }) => { memberId === id}) as Member;
+  public getMemberGender(memberId: string): string {
+    let gender: string;
+    let targetMember =  this.memberService.members.find( ({ id }) =>  memberId === id) as Member;
+    gender = targetMember.gender;
+    return gender;
   }
 
 

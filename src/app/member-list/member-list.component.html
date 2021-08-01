@@ -8,8 +8,10 @@
 
         <!-- Member Entry -->
         <div *ngFor="let member of memberService.memberSearchResults">    
+
             <div class="card m-b-30" style="width: 25rem; margin:2rem;" 
                *ngIf="member.id != memberService.loggedInMember.id && member.id != 'Guest'">
+
                 <div class="card-body row">
                     <div class="col-6" *ngIf="member.gender == 'Female'">
                         <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="" class="img-fluid rounded-circle w-60">
