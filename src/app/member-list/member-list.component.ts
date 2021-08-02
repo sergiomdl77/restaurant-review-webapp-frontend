@@ -19,6 +19,8 @@ export class MemberListComponent
   public restaurantOfInterest: Restaurant = {
     id: 0,
     name: "",
+    phoneNumber: "",
+    email: "",
     locCity: "",
     locState: "",
     locZipCode: "",
@@ -27,7 +29,8 @@ export class MemberListComponent
     foodType: "",
     ambiance: "",
     priceLevel: 0,
-    imageUrl: ""
+    imageUrl: "",
+    description: ""
   }
 
   constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
@@ -179,7 +182,7 @@ export class MemberListComponent
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'reviewList') {
-      this.setReviewsFromMember(member); // re-sets the reviewsByRestaurant
+      this.setReviewsFromMember(member); // re-sets the reviewsFromMember
       button.setAttribute('data-target', '#reviewsFromMemberModal');
     }
 

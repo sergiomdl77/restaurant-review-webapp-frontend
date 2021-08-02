@@ -130,18 +130,15 @@
                         <p class="info" style="font-weight: bold;"> 
                             {{restaurantOfInterest.locCity}}, {{restaurantOfInterest.locState}} {{restaurantOfInterest.locZipCode}}
                         </p>
-                        <p>
-                            <span>Phone Number: </span>
-                            <!-- <span> {{ restaurantOfInterest.phone }} </span> -->
-                        </p>
+                        <p class="info"> Phone Number: {{restaurantOfInterest.phoneNumber}} </p>
+                        <p class="info"> Email: {{ restaurantOfInterest.email }} </p>
                         <p class="info"> Cuisine: {{restaurantOfInterest.foodType}} </p>
                         <p class="info"> Ambiance: {{restaurantOfInterest.ambiance}} </p>
-
                     </div>
                 </div>
-                <div style="padding-left: 3rem;">
+                <div style="padding-left: 3rem; padding-right:3rem;">
                     <p> Desription:</p>
-                    <!-- <p> {{ restaurantOfInterest.description }}</p> -->
+                    <p> {{ restaurantOfInterest.description }}</p>
                 </div>
             </div>
 

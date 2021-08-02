@@ -22,6 +22,22 @@ export class AppComponent implements OnInit
   public reviewsFromMember: Review[] = [];
   public acceptedPassword = true;
   public reviewToDelete = {} as Review;
+  public restaurantOfInterest: Restaurant = {     
+    id: 0,
+    name: "",
+    phoneNumber: "",
+    email: "",
+    locCity: "",
+    locState: "",
+    locZipCode: "",
+    avgScore: 0,
+    reviewCount: 0,
+    foodType: "",
+    ambiance: "",
+    priceLevel: 0,
+    imageUrl: "",
+    description: ""
+  };
 
   private guestUser: Member = {
     id : "Guest",
@@ -34,7 +50,8 @@ export class AppComponent implements OnInit
     locZipCode : "Guest",
     gender : "Guest",
     email : "Guest"
-   } 
+   };
+
    private emptyReview: Review = 
    { rvId: 0,
      restaurantId: 0,
@@ -68,6 +85,18 @@ export class AppComponent implements OnInit
       this.memberService.loggedInMember = this.guestUser;
     else
       this.memberService.loggedInMember = this.memberService.members.find( ({ id }) => id === loggedInMemberFromLocalStorage ) as Member;
+  }
+
+
+  public setRestaurantOfInterest(restaurantId:number): void{
+    this.restaurantService.getRestaurant(restaurantId).subscribe(
+      (response: Restaurant) => { 
+        this.restaurantOfInterest = response;
+      },
+      (error: HttpErrorResponse) => { alert(error.message); }
+    );
+    
+    // return this.restaurantService.restaurants.find( ({ id }) => id === restaurantId ) as Restaurant;
   }
 
 
@@ -147,9 +176,12 @@ export class AppComponent implements OnInit
 
 
   // Method that resets the restaurant Results to all currently persisted restaurants
+  // forces scrolling to top of page after moving from one page to another
   public resetResults(): void{
     this.restaurantService.restaurantSearchResults = this.restaurantService.restaurants;
     this.memberService.memberSearchResults = this.memberService.members;
+    window.scrollTo(0, 0)  
+
   }
 
 
@@ -202,6 +234,10 @@ export class AppComponent implements OnInit
     return targetRestaurant.name;
   }
 
+  public getRestaurantImageUrl(restaurantId: number): string{
+    let targetRestaurant = this.restaurantService.restaurants.find( ({ id }) => id === restaurantId ) as Restaurant;
+    return targetRestaurant.imageUrl;
+  }
 
   public getShortBirthdate(memberId: string): string{
     let shortDate: string = "";
@@ -342,7 +378,7 @@ export class AppComponent implements OnInit
       (response: void) => { 
         let index = this.memberService.members.indexOf(this.memberService.loggedInMember,0);
         this.memberService.members.splice(index,1);
-        this.onLogout();
+        this.onLogOut();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -382,13 +418,8 @@ export class AppComponent implements OnInit
 
   }
 
-/*
-  public onLogout(): void{
-    this.memberService.loggedInMember = this.memberService.members.find( ({ id }) => id === "Guest" ) as Member;
-  }
-*/
 
-  public onLogout(): void{
+  public onLogOut(): void{
     this.memberService.loggedInMember = this.guestUser;
   }
 
@@ -401,12 +432,12 @@ export class AppComponent implements OnInit
     if (mode === 'myProfile') {
       button.setAttribute('data-target', '#myProfileModal');
     }
-    if (mode === 'myReviews') {
-      this.setReviewsFromMember(); // re-sets the reviewsByRestaurant
-      button.setAttribute('data-target', '#myReviewsModal');
+    if (mode === 'myPosts') {
+      this.setReviewsFromMember(); // re-sets the reviewsFromMember
+      button.setAttribute('data-target', '#myPostsModal');
     }
     if (mode === 'logIn') {
-      this.acceptedPassword = true;
+      this.acceptedPassword = true; 
       button.setAttribute('data-target', '#logInModal');
     }
     if (mode === 'signUp') {

@@ -16,6 +16,10 @@
         <li class="nav-item active">
           <a class="nav-link" routerLink="members">Members<span class="sr-only"></span></a>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="about">About<span class="sr-only"></span></a>
+        </li>
+
       </ul>
 
       <ul class="navbar-nav ml-auto">
@@ -49,9 +53,9 @@
                 style="font-size: small"> Log In for Actions</button>
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myProfile')">My Profile</button>
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('editProfile')">Edit Profile</button>
-              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myReviews')">My Reviews</button>
+              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('myPosts')">My Posts</button>
               <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onOpenModal('closeAccount')">Close Account</button>
-              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onLogout()">Sign Out</button>
+              <button [disabled]="memberService.loggedInMember.id == 'Guest'" class="dropdown-item" (click)="onLogOut()">Log Out</button>
             </div>
 
           </div>
@@ -73,6 +77,9 @@
 
 
 </div>
+
+
+
 
 
 <!--Sign Up (MODAL)-->
@@ -155,7 +162,7 @@
 
 
 
-<!--Login (MODAL)-->
+<!--Log In (MODAL)-->
 <div id="logInModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -193,59 +200,76 @@
 
 
 <!-- My Profile (MODAL)-->
-<div class="modal fade" id="myProfileModal" tabindex="-1" aria-labelledby="myProfileLabel" aria-hidden="true">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="myProfileLabel"> My Profile </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-          <span aria-hidden="true">&times;</span>
-      </div>
+<div id="myProfileModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
 
-      <div class="modal-body">
-        <div class="card m-b-30" style="width: 25rem; margin:2rem;">
-          <div class="card-body row">
-              <div class="col-6" >
-                  <a  href=""><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="img-fluid rounded-circle w-60"></a>
-              </div>
-              <div class="col-6 card-title align-self-center mb-0">
-                  <h5 style="font-weight: bold;"> {{ memberService.loggedInMember.id }}</h5>
-                  <p class="m-0" style="color:grey"> {{ getMemberLocation(memberService.loggedInMember.id) }}</p>
+          <div class="modal-header">
+            <h1 class="text-center"> My Profile</h1>
+            <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+
+          <div class="modal-body">
+              <div class="card m-b-30" style="width: 25rem; margin:2rem;" >
+                  <div class="card-body row">
+                      <div class="col-6" *ngIf="memberService.loggedInMember.gender == 'Female'">
+                          <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="" class="img-fluid rounded-circle w-60">
+                      </div>
+                      <div class="col-6" *ngIf="memberService.loggedInMember.gender == 'Male'">
+                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="img-fluid rounded-circle w-60">
+                      </div>
+                      <div class="col-6" *ngIf="memberService.loggedInMember.gender == 'Other'">
+                          <img src="/assets/img/anonymous_user_grey.png" width="350" alt="" class="img-fluid rounded-circle w-60">
+                      </div>
+
+                      <div class="col-6 card-title align-self-center mb-0">
+                          <h5 style="font-weight: bold;"> {{ memberService.loggedInMember.id }}</h5>
+                          <p class="m-0" style="color:rgb(131, 126, 126)"> {{ getMemberLocation( memberService.loggedInMember.id ) }}</p>
+                      </div>
+                  </div>
+
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">First Name : {{ memberService.loggedInMember.firstName }}</li>
+                    <li class="list-group-item">Last Name : {{ memberService.loggedInMember.lastName }}</li>
+                    <li class="list-group-item">Gender : {{ memberService.loggedInMember.gender }}</li>
+                    <li class="list-group-item">Birthdate : {{ getShortBirthdate( memberService.loggedInMember.id )}} <i class="bi bi-calendar-check float-right"></i></li>
+                    <li class="list-group-item">Password : {{ memberService.loggedInMember.password }}<i class="bi bi-lock-fill float-right"></i></li>
+                    <li class="list-group-item">Email : <a href="#"> {{ memberService.loggedInMember.email }} </a> <i class="fa fa-envelope float-right"></i></li>
+                    <li class="list-group-item">Posted Reviews: {{ getReviewsFromMemberCount() }} <i class="bi bi-hand-thumbs-up float-right"></i></li>
+                        </ul> 
               </div>
           </div>
-          <ul class="list-group list-group-flush">
-              <li class="list-group-item">First Name : {{ memberService.loggedInMember.firstName }}</li>
-              <li class="list-group-item">Last Name : {{ memberService.loggedInMember.lastName }}</li>
-              <li class="list-group-item">Gender : {{ memberService.loggedInMember.gender }}</li>
-              <li class="list-group-item">Birthdate : {{ getShortBirthdate( memberService.loggedInMember.id )}} <i class="bi bi-calendar-check float-right"></i></li>
-              <li class="list-group-item">Password : {{ memberService.loggedInMember.password }}<i class="bi bi-lock-fill float-right"></i></li>
-              <li class="list-group-item">Email : <a href="#"> {{ memberService.loggedInMember.email }} </a> <i class="fa fa-envelope float-right"></i></li>
-              <li class="list-group-item">Posted Reviews: {{ getReviewsFromMemberCount() }} <i class="bi bi-hand-thumbs-up float-right"></i></li>
-          </ul>
-        </div>
-      </div>
 
-      <div class="modal-footer">
-          <button type="button"  class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary btn-info btn-md" data-dismiss="modal">Close</button>
+          </div>
       </div>
-    </div>
   </div>
 </div>
 
-<!-- My Reviews (MODAL) -->
-<div class="modal fade" id="myReviewsModal" tabindex="-1" aria-labelledby="myReviewsLabel" aria-hidden="true">
+
+<!-- My Posts (MODAL) -->
+<div class="modal fade" id="myPostsModal" tabindex="-1" aria-labelledby="myReviewsLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" >
     <div class="modal-content" >
       <div class="modal-header">
         <h4 class="modal-title" id="myReviewsLabel" style="font-weight:bold; color:teal"> 
-          {{ this.memberService.loggedInMember.id }}'s Reviews
+          {{ this.memberService.loggedInMember.id }}'s Posts
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
           <span aria-hidden="true">&times;</span>
-      </div>
+        </div>
       <div class="modal-body" style=" background-color: darkgray;">
 
+          <div *ngIf="!reviewsFromMember.length">
+            <p style="color: black">You have not posted reviews on any restaurant yet.</p>
+          </div>
+
           <div class="member-entry" *ngFor="let review of reviewsFromMember" > 
+              <a  class="member-img" style="width:10rem; height:10rem"> 
+                  <img [src]="getRestaurantImageUrl(review.restaurantId)" class="img-rounded" style="height:10rem"> 
+              </a> 
+
               <div class="search-result-item-body">
                   <div class="row">
                       <div class="col-sm-9">
@@ -260,15 +284,10 @@
                           </p>
                       </div>
                       <div class="col-sm-3 text-align-center" style="min-width:120px; padding-left: 0px; float: left">
-                        <!-- <p style="margin-top:15px">
-                            <a (click)="onOpenModal(restaurant, 'reviewList')" class="btn btn-primary btn-info btn-sm" style="color:white;" >Edit Review</a>
-                        </p> -->
                         <p style="margin-top:15px">
                             <a (click)="setupDeleteReview(review)" class="btn btn-primary btn-info btn-sm" style="color:white;">Delete Review</a>
                         </p>
-    
                     </div>
-    
                   </div>
               </div>    
           </div>
@@ -280,6 +299,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Sign Up Acceptance (MODAL) -->
 <div class="modal fade" id="signUpAcceptanceModal" tabindex="-1" aria-labelledby="signUpAcceptanceLabel" aria-hidden="true">

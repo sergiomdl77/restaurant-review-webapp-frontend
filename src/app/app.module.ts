@@ -11,6 +11,7 @@ import { RestaurantListComponent } from './restaurant-list/restaurant-list.compo
 import { MemberListComponent } from './member-list/member-list.component';
 import { MemberMainComponent } from './member-main/member-main.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     RestaurantListComponent,
     MemberListComponent,
     MemberMainComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,8 @@ export interface Restaurant
 {
     id: number;
     name: string;
+    phoneNumber: string;
+    email: string;
     locCity: string;
     locState: string;
     locZipCode: string;
@@ -13,4 +15,5 @@ export interface Restaurant
     ambiance: string;
     priceLevel: number;
     imageUrl: string;
+    description: string;
 }
