@@ -170,21 +170,19 @@
           <div class="col-lg-9">
             <h2 style="text-align: center; margin: 2rem" >Restaurants to Review</h2> 
             <hr>
-
             <!-- RESULTS Page -->
-            <!-- <p>Showing all results</p> -->
             
             <div class="row">
 
               <!-- BEGIN ORDER RESULT -->
               <div class="col-sm-6">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle" id="orderByDropdown" data-toggle="dropdown">
-                    Order by <span class="caret"></span>
+                  <button type="button" class="btn btn-sm btn-secondary dropdown-toggle rounded-pill"  id="orderByDropdown" data-toggle="dropdown">
+                    Order by: {{ restaurantResultsOrderCriteria }} <span class="caret"></span>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="orderByDropdown">
-                    <button class="dropdown-item" (click)="orderRestaurantResultsByName()">Name</button>
-                    <button class="dropdown-item" (click)="orderRestaurantResultsByRating()">Price</button>
+                    <button class="dropdown-item" (click)="orderRestaurantResults('Name')">Name</button>
+                    <button class="dropdown-item" (click)="orderRestaurantResults('Price')">Price</button>
                   </div>
                 </div>
               </div>
@@ -192,8 +190,7 @@
               
             </div>
             
-            <div class="padding"></div>
-            
+            <br>
 
             <!-- Result List -->
             <div>

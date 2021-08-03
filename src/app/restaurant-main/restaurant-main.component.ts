@@ -17,6 +17,9 @@ import { NgForm } from '@angular/forms';
 
 export class RestaurantMainComponent
 {
+  public restaurantResultsOrderCriteria: string = "";
+  
+
   constructor(public restaurantService: RestaurantService, public reviewService: ReviewService, public memberService: MemberService){}
 
 
@@ -33,12 +36,25 @@ export class RestaurantMainComponent
     );
   }
 
-  public orderRestaurantResultsByRating(): void{
+  public orderRestaurantResultsByPrice(): void{
     this.restaurantService.restaurantSearchResults.sort( 
       (a: Restaurant, b: Restaurant) => ((a.priceLevel < b.priceLevel) ? -1 : ((a.priceLevel == b.priceLevel) ? 0 : 1))
     );
   }
 
+  public orderRestaurantResults(orderCriteria: string): void {
+    if (orderCriteria === "Name") 
+      this.restaurantService.restaurantSearchResults.sort( 
+        (a: Restaurant, b: Restaurant) => ((a.name < b.name) ? -1 : ((a.name == b.name) ? 0 : 1))
+      );
+    else if (orderCriteria === "Price") 
+      this.restaurantService.restaurantSearchResults.sort( 
+        (a: Restaurant, b: Restaurant) => ((a.priceLevel < b.priceLevel) ? -1 : ((a.priceLevel == b.priceLevel) ? 0 : 1))
+      );
+
+    this.restaurantResultsOrderCriteria = orderCriteria;
+  
+  }
 
 
 
